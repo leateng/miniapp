@@ -57,10 +57,31 @@ Page({
   onTabChange: function(event) {
     console.log(event.detail);
     
+    // 首页
+    if (event.detail == 0) {
+      wx.navigateTo({
+        url: '/pages/index/index'
+      })
+    }
+
+    // 收藏
+    if (event.detail == 1) {
+      wx.navigateTo({
+        url: '/pages/favorite/favorite'
+      })
+    }
+
+    // 客服
     if(event.detail == 2){
-      console.log("call phone");
       wx.makePhoneCall({
         phoneNumber: '17779336015',
+      })
+    }
+
+    // 个人
+    if (event.detail == 3) {
+      wx.navigateTo({
+        url: '/pages/personal/personal'
       })
     }
   },

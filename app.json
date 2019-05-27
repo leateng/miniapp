@@ -1,11 +1,13 @@
 {
-  "pages":[
-    "pages/index/index"
+  "pages": [
+    "pages/index/index",
+    "pages/personal/personal",
+    "pages/favorite/favorite"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "精侍陪护",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   }
 }
