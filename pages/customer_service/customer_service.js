@@ -1,11 +1,11 @@
-// pages/favorite/favorite.js
+// pages/customer_service/customer_service.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    activeTab: 1
+    activeTab: "2",
   },
 
   /**
@@ -84,8 +84,12 @@ Page({
 
     // 客服
     if (event.detail == 2) {
-      wx.makePhoneCall({
-        phoneNumber: '17779336015',
+      //wx.makePhoneCall({
+      // phoneNumber: '17779336015',
+      // })
+
+      wx.redirectTo({
+        url: '/pages/customer_service/customer_service'
       })
     }
 
@@ -95,5 +99,11 @@ Page({
         url: '/pages/personal/personal'
       })
     }
+  },
+
+  callService: function () {
+    wx.makePhoneCall({
+      phoneNumber: '17779336015',
+    })
   }
 })

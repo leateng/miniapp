@@ -32,8 +32,24 @@ App({
         }
       }
     })
+
+    // 获取地理位置
+    wx.getLocation({
+      type: 'wgs84',
+      success(res) {
+        //const latitude = res.latitude
+        //const longitude = res.longitude
+        //const speed = res.speed
+        //const accuracy = res.accuracy
+        getApp().globalData.locationInfo = res;
+        console.log(getApp().globalData.locationInfo)  
+      }
+    })
   },
+
   globalData: {
-    userInfo: null
+    userInfo: null,
+    locationInfo: null,
+    city: null
   }
 })

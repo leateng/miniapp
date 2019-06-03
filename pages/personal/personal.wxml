@@ -1,2 +1,18 @@
-<!--pages/personal/personal.wxml-->
-<text>pages/personal/personal.wxml</text>
+<view class="container">
+  <view class="info-list">
+    <van-cell title="积分" is-link size="large" icon="gold-coin" url="/pages/dashboard/index" link-type="navigateTo"/>
+    <van-cell title="优惠券" is-link size="large" icon="coupon" />
+    <van-cell title="地址" is-link size="large" icon="map-marked" />
+    <van-cell title="我的订单" is-link size="large" icon="shopping-cart"  url="/pages/orders/orders" />
+    <van-cell title="常见问题" is-link size="large" icon="question" url="/pages/common_questions/common_questions" />
+    <van-cell title="关于" is-link size="large" icon="friends" />
+    <van-cell title="设置" is-link size="large" icon="setting" />
+  </view>
+
+  <van-tabbar active="{{ activeTab }}" bind:change="onTabChange">
+    <van-tabbar-item icon="shop">首页</van-tabbar-item>
+    <van-tabbar-item icon="star">收藏</van-tabbar-item>
+    <van-tabbar-item icon="service">客服</van-tabbar-item>
+    <van-tabbar-item icon="manager">个人</van-tabbar-item>
+  </van-tabbar>
+</view>

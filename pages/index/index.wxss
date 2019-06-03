@@ -7,3 +7,39 @@
   width: 100%;
   margin-bottom: 5px;
 }
+ 
+/*************** filters *****************/
+.filters {
+  font-size: 12px;
+  background-color: #f7f8fa;
+  color: #5b5c5e;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 5px;
+}
+
+.filters van-col>view {
+  height: 100%;
+  border-right: 1px solid #dddddd;
+  overflow: hidden;
+}
+
+.filters van-col>view text {
+  overflow: hidden ;
+  display: inline-block ;
+  text-overflow: ellipsis ;
+  white-space: nowrap;
+}
+
+.filters van-col:last-child >view{
+  border-right: 0;
+}
+
+.filters van-col {
+  text-align: center;
+}
+
+text.selectText::after{
+  content: " \25bc";
+  font-size: 10px;
+}

@@ -1,4 +1,9 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "van-cell": "/miniprogram_npm/vant-weapp/cell/index",
+    "van-cell-group": "/miniprogram_npm/vant-weapp/cell-group/index",
+    "van-tabbar": "/miniprogram_npm/vant-weapp/tabbar/index",
+    "van-tabbar-item": "/miniprogram_npm/vant-weapp/tabbar-item/index"
+  },
   "navigationBarTitleText": "我的信息"
 }

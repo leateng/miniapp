@@ -1,1 +1,37 @@
 /* pages/personal/personal.wxss */
+.info-list {
+  width: 100%;
+}
+
+.info-list .van-icon {
+  font-size: 18px ;
+}
+
+.van-icon.van-icon-gold-coin {
+  color: #e18b3b;
+}
+
+.van-icon.van-icon-coupon {
+  color: #00b26a;
+}
+
+.van-icon.van-icon-map-marked {
+  color: #438eee;
+}
+
+.van-icon.van-icon-shopping-cart {
+  color: #eb5428;
+}
+
+.van-icon.van-icon-question {
+  color: #ebb54e;
+}
+
+.van-icon.van-icon-friends {
+  color: #407fbb;
+}
+
+.van-icon.van-icon-setting {
+  color: #6b6b6b;
+}
+

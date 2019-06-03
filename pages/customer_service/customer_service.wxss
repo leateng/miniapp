@@ -1,0 +1,8 @@
+/* pages/customer_service/customer_service.wxss */
+page {
+  background-color: #F7F7F7;
+}
+.container {
+  width: 750rpx;
+  
+}

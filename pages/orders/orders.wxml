@@ -1,0 +1,31 @@
+<van-tabs active="{{ active }}" animated color="#eb5428" swipe-threshold="5" swipeable="true" bind:change="onChange" style="height: 100%;">
+  <van-tab title="全部">
+    <view class="tabContent">
+      内容 2
+    </view>
+  </van-tab>
+
+  <van-tab title="待付款">
+    <view class="tabContent">
+      内容 2
+    </view>
+  </van-tab>
+
+  <van-tab title="待服务">
+    <view class="tabContent">
+      内容 2
+    </view>
+  </van-tab>
+
+  <van-tab title="已完成">
+    <view class="tabContent">
+      内容 2
+    </view>
+  </van-tab>
+
+  <van-tab title="已取消">
+    <view class="tabContent">
+      内容 2
+    </view>
+  </van-tab>
+</van-tabs>

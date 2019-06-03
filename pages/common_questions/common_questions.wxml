@@ -1,0 +1,13 @@
+<view class="container">
+  <van-collapse value="{{ activeName }}" accordion  bind:change="onChange" style="width: 100%;">
+    <van-collapse-item wx:for="{{questions}}" name="{{index+1}}" title="{{index+1}}) {{item.question}}">
+      <text>{{item.answer}}</text>
+    </van-collapse-item>
+  </van-collapse>
+
+  <van-button size="large" square type="primary" style="width: 100%; margin-top: 50px;" bind:click="callService">
+    <van-icon name="phone" />  呼叫客服电话
+  </van-button>
+</view>
+
+

@@ -4,18 +4,65 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
+    activeTab: "0",
+    showFilter: false,
+    filters: [
+      {
+        name: "exp",
+        nameCN: "经验",
+        val: "" ,
+        options: [
+          {name: "所有" },
+          {name: "3年以下"},
+          {name: "3-5年" },
+          {name: "5-10年" },
+          {name: "10年以上" },
+        ]
+      },
+
+      {
+        name: "price",
+        nameCN: "价格",
+        val: "",
+        options: [
+          { name: "所有" },
+          { name: "100-200元" },
+          { name: "200-300元" },
+          { name: "300元以上" },
+        ]
+      },
+
+      {
+        name: "rate",
+        nameCN: "评分",
+        val: "",
+        options: [
+          { name: "所有" },
+          { name: "3分以下" },
+          { name: "3-4分" },
+          { name: "4-5分" },
+          { name: "5分" },
+        ]
+      },
+
+      {
+        name: "sex",
+        nameCN: "性别",
+        val: "",
+        options: [
+          { name: '所有' },
+          { name: '男' },
+          { name: '女' }
+        ]
+      },
+    ],
+
+    employee: [],
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    value: ""
+    canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
+
   onLoad: function () {
     if (app.globalData.userInfo) {
       this.setData({
@@ -44,6 +91,7 @@ Page({
       })
     }
   },
+
   getUserInfo: function(e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
@@ -59,28 +107,32 @@ Page({
     
     // 首页
     if (event.detail == 0) {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/index/index'
       })
     }
 
     // 收藏
     if (event.detail == 1) {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/favorite/favorite'
       })
     }
 
     // 客服
     if(event.detail == 2){
-      wx.makePhoneCall({
-        phoneNumber: '17779336015',
+      //wx.makePhoneCall({
+       // phoneNumber: '17779336015',
+     // })
+
+      wx.redirectTo({
+        url: '/pages/customer_service/customer_service'
       })
     }
 
     // 个人
     if (event.detail == 3) {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/personal/personal'
       })
     }
@@ -96,5 +148,29 @@ Page({
   // 响应搜索按钮
   onSearch: function (event){
     console.log("searching: " + this.data.searchString);
+  },
+
+  // filters
+  onClickFilterButton: function(event){
+    var currentFilterType = event.currentTarget.dataset.filterType;
+    var currentFilterIndex = event.currentTarget.dataset.filterIndex;
+    var currentFilterOptions = this.data.filters[currentFilterIndex].options;
+    this.setData({ currentFilterType: currentFilterType, currentFilterIndex: currentFilterIndex, showFilter: true})
+  },
+
+  onFilterSelect: function(event){
+    var currentFilterIndex = parseInt(this.data.currentFilterIndex);
+    var val = event.detail.name == "所有" ? "" : event.detail.name;
+    this.setData({ showFilter: false, [`filters[${currentFilterIndex}].val`]: val }, function () {
+      console.log("searching......")
+
+    });
+  },
+
+  onFilterClose: function(event){    
+  },
+
+  onFilterCancel: function(event) {
+    this.setData({ showFilter: false})
   }
 })

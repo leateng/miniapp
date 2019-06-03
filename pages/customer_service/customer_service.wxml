@@ -1,10 +1,9 @@
 <view class="container">
-  <!--van-tabbar active="{{ active }}" bind:change="onTabChange">
-    <van-tabbar-item icon="home-o">首页</van-tabbar-item>
-    <van-tabbar-item icon="star-o">收藏</van-tabbar-item>
-    <van-tabbar-item icon="service-o">客服</van-tabbar-item>
-    <van-tabbar-item icon="user-o">个人</van-tabbar-item>
-  </van-tabbar-->
+  <image src="/images/timg.jpeg"></image>
+  <text style="font-size: 24px; color: #5b5c5e; margin-top: 20px;">17779336015</text>
+  <van-button size="large" square type="primary" style="width: 100%; margin-top: 50px;" bind:click="callService">
+    <van-icon name="phone" />  呼叫客服电话
+  </van-button>
 
   <van-tabbar active="{{ activeTab }}" bind:change="onTabChange">
     <van-tabbar-item icon="shop">首页</van-tabbar-item>
