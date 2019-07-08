@@ -172,5 +172,13 @@ Page({
 
   onFilterCancel: function(event) {
     this.setData({ showFilter: false})
+  },
+
+  onClickEmployee: function(event){
+    console.log(event.currentTarget.dataset)
+    var employeeId = event.currentTarget.dataset.employeeId;
+    wx.navigateTo({
+      url: `/pages/employee_detail/employee_detail?employeeId=${employeeId}`,
+    })
   }
 })

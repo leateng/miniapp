@@ -1,10 +1,11 @@
-// pages/orders/orders.js
+// pages/employee_detail/employee_detail.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    plain: "plain"
 
   },
 
@@ -12,14 +13,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData(options)
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    console.log(this.data.employeeId)
   },
 
   /**
@@ -47,14 +48,14 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log("pull")
+
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log("bottom")
+
   },
 
   /**

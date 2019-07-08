@@ -1,6 +1,7 @@
 <!--index.wxml-->
 <view class="container">
 
+  <!-- 搜索框 -->
   <van-row style="width: 100%; " >
     <van-col span="4">
       <view style="width:100%; height: 54px;font-size: 14px;box-sizing:border-box; display: flex; align-items:center; color: #438eee;">
@@ -21,6 +22,7 @@
     </van-col>
   </van-row>
 
+  <!-- 下拉过滤 -->
   <van-row style="width: 100%;" class="filters">
     <van-col span="6" wx:for="{{filters}}" wx:key="name">
       <view bind:tap="onClickFilterButton" data-filter-type="{{item.name}}" data-filter-index="{{index}}">
@@ -28,137 +30,101 @@
       </view>
     </van-col>
   </van-row>
-
-  <!--van-row style="width: 100%;" class="filters">
-    <van-col span="6">
-      <view bind:tap="onClickFilterButton" data-filter-type="exp">
-        <text class="selectText">{{filters.exp.val.length == 0 ? "经验" : filters.exp.val}}</text>
-      </view>
-      
-    </van-col>
-    <van-col span="6">
-      <view bind:tap="onClickFilterButton" data-filter-type="price">
-        <text class="selectText">{{filters.price.val.length == 0 ? "价格" : filters.price.val}}</text>
-      </view>
-    </van-col>
-
-    <van-col span="6">
-      <view bind:tap="onClickFilterButton" data-filter-type="rate">
-        <text class="selectText">{{filters.rate.val.length == 0 ? "评分" : filters.rate.val}}</text>
-      </view>
-    </van-col>
-
-    <van-col span="6">
-      <view bind:tap="onClickFilterButton" data-filter-type="sex">
-        <text class="selectText">{{filters.sex.val.length == 0 ? "性别" : filters.sex.val}}</text>
-      </view>
-    </van-col>
-  </van-row-->
   
-  <view class="employee-group">
-    <!--view class="userinfo">
-      <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
-    </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
-      <l-icon name="add"> </l-icon>
-    </view-->
-
+  <view class='employee-group'>
     <view class="employee-item">
       <van-card class="employee-card"
-      price="2.00/天"
-      desc="赵苗苗 67岁 护领6年"
-      title="骨科护理"
-      thumb="/images/avatar.png"
-      />
+        price="2.00/天"
+        desc="赵苗苗 67岁 护领6年"
+        title="骨科护理"
+        thumb="/images/avatar.png"
+        bind:tap="onClickEmployee"
+        data-employee-id="123"
+        />
     </view>
 
       <view class="employee-item">
-      <van-card class="employee-card"
-      num="2"
-      price="2.00"
-      desc="描述信息"
-      title="商品标题"
-      thumb="/images/avatar.png"
-      />
-    </view>
+        <van-card class="employee-card"
+        num="2"
+        price="2.00"
+        desc="描述信息"
+        title="商品标题"
+        thumb="/images/avatar.png"
+        />
+      </view>
 
       <view class="employee-item">
-      <van-card class="employee-card"
-      num="2"
-      price="2.00"
-      desc="描述信息"
-      title="商品标题"
-      thumb="/images/avatar.png"
-      />
-    </view>
+        <van-card class="employee-card"
+        num="2"
+        price="2.00"
+        desc="描述信息"
+        title="商品标题"
+        thumb="/images/avatar.png"
+        />
+      </view>
 
       <view class="employee-item">
-      <van-card class="employee-card"
-      num="2"
-      price="2.00"
-      desc="描述信息"
-      title="商品标题"
-      thumb="/images/avatar.png"
-      />
-    </view>
+        <van-card class="employee-card"
+        num="2"
+        price="2.00"
+        desc="描述信息"
+        title="商品标题"
+        thumb="/images/avatar.png"
+        />
+      </view>
 
       <view class="employee-item">
-      <van-card class="employee-card"
-      num="2"
-      price="2.00"
-      desc="描述信息"
-      title="商品标题"
-      thumb="/images/avatar.png"
-      />
-    </view>
+        <van-card class="employee-card"
+        num="2"
+        price="2.00"
+        desc="描述信息"
+        title="商品标题"
+        thumb="/images/avatar.png"
+        />
+      </view>
 
       <view class="employee-item">
-      <van-card class="employee-card"
-      num="2"
-      price="2.00"
-      desc="描述信息"
-      title="商品标题"
-      thumb="/images/avatar.png"
-      />
-    </view>
-    
+        <van-card class="employee-card"
+        num="2"
+        price="2.00"
+        desc="描述信息"
+        title="商品标题"
+        thumb="/images/avatar.png"
+        />
+      </view>
+      
       <view class="employee-item">
-      <van-card class="employee-card"
-      num="2"
-      price="2.00"
-      desc="描述信息"
-      title="商品标题"
-      thumb="/images/avatar.png"
-      />
+        <van-card class="employee-card"
+        num="2"
+        price="2.00"
+        desc="描述信息"
+        title="商品标题"
+        thumb="/images/avatar.png"
+        />
+      </view>
+      
+      <view class="employee-item">
+        <van-card class="employee-card"
+        num="2"
+        price="2.00"
+        desc="描述信息"
+        title="商品标题"
+        thumb="/images/avatar.png"
+        />
+      </view>
 
-    </view>
-        <view class="employee-item">
-      <van-card class="employee-card"
-      num="2"
-      price="2.00"
-      desc="描述信息"
-      title="商品标题"
-      thumb="/images/avatar.png"
-      />
-    </view>
-
-        <view class="employee-item">
-      <van-card class="employee-card"
-      num="2"
-      price="2.00"
-      desc="描述信息"
-      title="商品标题"
-      thumb="/images/avatar.png"
-      />
-    </view>
-
+      <view class="employee-item">
+        <van-card class="employee-card"
+        num="2"
+        price="2.00"
+        desc="描述信息"
+        title="商品标题"
+        thumb="/images/avatar.png"
+        />
+      </view>
   </view>
 
+  <!-- 底部导航栏 -->
   <van-tabbar active="{{ activeTab }}" bind:change="onTabChange">
     <van-tabbar-item icon="shop">首页</van-tabbar-item>
     <van-tabbar-item icon="star">收藏</van-tabbar-item>
@@ -167,7 +133,7 @@
   </van-tabbar>
 </view>
 
-
+<!-- 下拉列表弹出框 -->
 <van-action-sheet
   show="{{ showFilter }}"
   actions="{{ filters[currentFilterIndex].options }}"

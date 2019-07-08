@@ -26,7 +26,7 @@ function padZero(val) {
 }
 function times(n, iteratee) {
     var index = -1;
-    var result = Array(n);
+    var result = Array(n < 0 ? 0 : n);
     while (++index < n) {
         result[index] = iteratee(index);
     }
@@ -79,24 +79,30 @@ component_1.VantComponent({
         columns: []
     },
     watch: {
-        value: function (val) {
+        value: 'updateValue',
+        type: 'updateValue',
+        minDate: 'updateValue',
+        maxDate: 'updateValue',
+        minHour: 'updateValue',
+        maxHour: 'updateValue',
+        minMinute: 'updateValue',
+        maxMinute: 'updateValue'
+    },
+    methods: {
+        updateValue: function () {
             var _this = this;
             var data = this.data;
-            val = this.correctValue(val);
+            var val = this.correctValue(this.data.value);
             var isEqual = val === data.innerValue;
             if (!isEqual) {
                 this.updateColumnValue(val).then(function () {
                     _this.$emit('input', val);
                 });
             }
+            else {
+                this.updateColumns();
+            }
         },
-        type: 'updateColumns',
-        minHour: 'updateColumns',
-        maxHour: 'updateColumns',
-        minMinute: 'updateColumns',
-        maxMinute: 'updateColumns'
-    },
-    methods: {
         getPicker: function () {
             if (this.picker == null) {
                 var picker_1 = (this.picker = this.selectComponent('.van-datetime-picker'));

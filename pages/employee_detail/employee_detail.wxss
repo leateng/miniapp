@@ -1,0 +1,13 @@
+/* pages/employee_detail/employee_detail.wxss */
+page {
+  background-color: #f8f8f8;
+}
+
+.container{
+  width: 100%;
+  background-color: #FFFFFF;
+}
+
+van-row {
+  width: 100%;
+}

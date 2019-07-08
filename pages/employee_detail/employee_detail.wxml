@@ -1,0 +1,39 @@
+<view>
+  <view class='container'>
+    sadf
+  </view>
+  
+  <view style="margin-top: 10px;">
+    <van-tabs active="{{ active }}" bind:change="onChange">
+      <van-tab title="基础信息">
+        <view class='container'>
+          <van-row>
+            <van-col></van-col>
+          </van-row>
+        </view>
+      </van-tab>
+
+      <van-tab title="个人介绍">
+
+      </van-tab>
+
+      <van-tab title="用户评价">
+        <view>
+          <van-tag size="large" color="#f2826a">全部</van-tag>
+          <van-tag size="large" color="#f2826a" plain>好评</van-tag>
+          <van-tag size="large" color="#7232dd">中评</van-tag>
+          <van-tag size="large" color="#7232dd" plain>差评</van-tag>
+        </view>
+
+      </van-tab>
+    </van-tabs>
+  </view>
+    
+  <view>
+    <van-submit-bar
+      price="{{3050}}"
+      button-text="提交订单"
+      bind:submit="onSubmit"
+      />
+  </view>
+</view>

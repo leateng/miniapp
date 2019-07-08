@@ -5,7 +5,8 @@
     "pages/favorite/favorite",
     "pages/orders/orders",
     "pages/common_questions/common_questions",
-    "pages/customer_service/customer_service"
+    "pages/customer_service/customer_service",
+    "pages/employee_detail/employee_detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
