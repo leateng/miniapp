@@ -18,6 +18,9 @@ App({
         var code = res.code;
         if (code) {
           console.log('获取用户登录凭证：' + code);
+          getApp().globalData.code = code;
+          // todo: 发送 res.code 到后台换取 openId, sessionKey, unionId
+          //
         } else {
           console.log('获取用户登录态失败：' + res.errMsg);
         }
@@ -63,6 +66,7 @@ App({
   globalData: {
     userInfo: null,
     locationInfo: null,
-    city: null
+    city: null,
+    code: null,
   }
 })

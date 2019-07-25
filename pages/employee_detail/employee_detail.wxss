@@ -6,8 +6,13 @@ page {
 .container{
   width: 100%;
   background-color: #FFFFFF;
+  padding: 0;
 }
 
 van-row {
   width: 100%;
+}
+
+.employee-item {
+  background-color: #FFFFFF;
 }

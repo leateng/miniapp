@@ -59,6 +59,9 @@ Page({
 
     employee: [],
     userInfo: {},
+    caregiveres: [],
+    page: 1,
+    perPage: 20,
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
@@ -90,10 +93,29 @@ Page({
         }
       })
     }
+
+    // 获取护工列表数据
+    this.getCaregiveres({});
+  },
+
+  buildParams: function () {
+    return {};
+  },
+
+  getCaregiveres: function () {
+    var params = this.buildParams();
+    var self = this;
+    wx.request({
+      url: 'https://jingshi.site:8443/listCaregiver',
+      method: 'GET',
+      data: params,
+      success: function (res) {
+        self.setData({ caregiveres: res.data['data'] });
+      }
+    })
   },
 
   getUserInfo: function(e) {
-    console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
@@ -102,9 +124,7 @@ Page({
   },
 
   // event.detail 的值为当前选中项的索引
-  onTabChange: function(event) {
-    console.log(event.detail);
-    
+  onTabChange: function(event) {    
     // 首页
     if (event.detail == 0) {
       wx.redirectTo({
@@ -155,15 +175,16 @@ Page({
     var currentFilterType = event.currentTarget.dataset.filterType;
     var currentFilterIndex = event.currentTarget.dataset.filterIndex;
     var currentFilterOptions = this.data.filters[currentFilterIndex].options;
-    this.setData({ currentFilterType: currentFilterType, currentFilterIndex: currentFilterIndex, showFilter: true})
+    this.setData({ currentFilterType: currentFilterType, currentFilterIndex: currentFilterIndex, showFilter: true}, function(){
+      this.getCaregiveres();
+    });
   },
 
   onFilterSelect: function(event){
     var currentFilterIndex = parseInt(this.data.currentFilterIndex);
     var val = event.detail.name == "所有" ? "" : event.detail.name;
     this.setData({ showFilter: false, [`filters[${currentFilterIndex}].val`]: val }, function () {
-      console.log("searching......")
-
+      this.getCaregiveres();
     });
   },
 
@@ -175,7 +196,6 @@ Page({
   },
 
   onClickEmployee: function(event){
-    console.log(event.currentTarget.dataset)
     var employeeId = event.currentTarget.dataset.employeeId;
     wx.navigateTo({
       url: `/pages/employee_detail/employee_detail?employeeId=${employeeId}`,

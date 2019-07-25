@@ -1,4 +1,39 @@
 <view class="container">
+  <view class='employee-group'>
+    <view class="employee-item" 
+      wx:for="{{caregiveres}}" wx:for-index="idx" wx:for-item="caregiver"
+      bind:tap="onClickEmployee"
+      data-employee-id="{{caregiver['idNumber']}}">
+      <view class="thumb">
+        <image src="http://47.93.238.25:8000/static/image/photo/{{caregiver['photoId']}}.jpg" mode="aspectFit"></image>
+      </view>
+      <view class="info">
+        <view class="price">￥{{caregiver['price']}}/天</view>
+        <view class="like">
+          <van-icon class="like" name="like" />
+        </view>
+        
+        <view class="title">{{caregiver['advantage']}}</view>
+        <view class='text'>姓名：{{caregiver['name']}}</view>
+        <view class='text'>年龄：{{caregiver['age']}}岁</view>
+        <view class='text'>护龄：{{caregiver['experience']}}年</view>
+        <view class='text'>评分：{{caregiver['point']}}分
+          <block wx:if='{{caregiver["point"] > 0}}'>
+            <block wx:for='{{caregiver["point"]-0}}' wx:key='un'>
+              <van-icon class="star" name="star" />
+            </block>
+          </block>
+
+          <block wx:if='{{caregiver["point"] < 5}}'>
+            <block wx:for='{{5-caregiver["point"]-0}}' wx:key="un">
+              <van-icon name="star-o" />
+            </block>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+
   <!--van-tabbar active="{{ active }}" bind:change="onTabChange">
     <van-tabbar-item icon="home-o">首页</van-tabbar-item>
     <van-tabbar-item icon="star-o">收藏</van-tabbar-item>

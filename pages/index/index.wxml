@@ -30,100 +30,35 @@
       </view>
     </van-col>
   </van-row>
-  
+
   <view class='employee-group'>
-    <view class="employee-item">
-      <van-card class="employee-card"
-        price="2.00/天"
-        desc="赵苗苗 67岁 护领6年"
-        title="骨科护理"
-        thumb="/images/avatar.png"
-        bind:tap="onClickEmployee"
-        data-employee-id="123"
-        />
+    <view class="employee-item" 
+      wx:for="{{caregiveres}}" wx:for-index="idx" wx:for-item="caregiver" wx:key="idNumber"
+      bind:tap="onClickEmployee"
+      data-employee-id="{{caregiver['idNumber']}}">
+      <view class="thumb">
+        <image src="http://47.93.238.25:8000/static/image/photo/{{caregiver['photoId']}}.jpg" mode="aspectFit"></image>
+      </view>
+      <view class="info">
+        <view class="price">￥{{caregiver['price']}}/天</view>
+        <view class="title">{{caregiver['advantage']}}</view>
+        <view class='text'>姓名：{{caregiver['name']}}</view>
+        <view class='text'>年龄：{{caregiver['age']}}岁</view>
+        <view class='text'>护龄：{{caregiver['experience']}}年</view>
+        <view class='text'>评分：{{caregiver['point']}}分
+          <van-rate
+          value="{{ caregiver['point'] }}"
+          count="{{ 5 }}"
+          size="{{ 14 }}"
+          readonly
+          allow-half
+          style="display: inline-block; height:18px; line-height: 18px;"
+          />
+        </view>
+      </view>
     </view>
-
-      <view class="employee-item">
-        <van-card class="employee-card"
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="/images/avatar.png"
-        />
-      </view>
-
-      <view class="employee-item">
-        <van-card class="employee-card"
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="/images/avatar.png"
-        />
-      </view>
-
-      <view class="employee-item">
-        <van-card class="employee-card"
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="/images/avatar.png"
-        />
-      </view>
-
-      <view class="employee-item">
-        <van-card class="employee-card"
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="/images/avatar.png"
-        />
-      </view>
-
-      <view class="employee-item">
-        <van-card class="employee-card"
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="/images/avatar.png"
-        />
-      </view>
-      
-      <view class="employee-item">
-        <van-card class="employee-card"
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="/images/avatar.png"
-        />
-      </view>
-      
-      <view class="employee-item">
-        <van-card class="employee-card"
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="/images/avatar.png"
-        />
-      </view>
-
-      <view class="employee-item">
-        <van-card class="employee-card"
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="/images/avatar.png"
-        />
-      </view>
   </view>
-
+  
   <!-- 底部导航栏 -->
   <van-tabbar active="{{ activeTab }}" bind:change="onTabChange">
     <van-tabbar-item icon="shop">首页</van-tabbar-item>

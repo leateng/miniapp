@@ -12,7 +12,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // todo：获取护工列表数据， 应修改为获取关注的护工列表
+    this.getLikeCaregiveres({});
   },
 
   /**
@@ -95,5 +96,23 @@ Page({
         url: '/pages/personal/personal'
       })
     }
-  }
+  },
+
+  buildParams: function () {
+    return {};
+  },
+
+  getLikeCaregiveres: function () {
+    var params = this.buildParams();
+    var self = this;
+    wx.request({
+      url: 'https://jingshi.site:8443/listCaregiver',
+      method: 'GET',
+      data: params,
+      success: function (res) {
+        self.setData({ caregiveres: res.data['data'].slice(0, 3) });
+        console.log(self.data.caregiveres)
+      }
+    })
+  },
 })
