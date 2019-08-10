@@ -31,7 +31,7 @@
     </van-col>
   </van-row>
 
-  <view class='employee-group'>
+  <view class='employee-group' style='margin-bottom:30rpx'>
     <view class="employee-item" 
       wx:for="{{caregiveres}}" wx:for-index="idx" wx:for-item="caregiver" wx:key="idNumber"
       bind:tap="onClickEmployee"
@@ -58,6 +58,23 @@
       </view>
     </view>
   </view>
+
+  <block wx:if="{{loading == 'true'}}"> 
+    <van-button plain hairline type="default" 
+      loading
+      size="large" 
+      style='width: 100%; margin-bottom:110rpx'>
+    </van-button>
+  </block>
+  <block wx:else="{{loading == 'false'}}">
+    <van-button plain hairline type="default" 
+      size="large" 
+      style='width: 100%; margin-bottom:110rpx'
+      bindtap='onMore'>
+      加载更多...
+    </van-button>
+  </block>
+  
   
   <!-- 底部导航栏 -->
   <van-tabbar active="{{ activeTab }}" bind:change="onTabChange">

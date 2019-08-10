@@ -60,9 +60,10 @@ Page({
     employee: [],
     userInfo: {},
     caregiveres: [],
-    page: 1,
-    perPage: 20,
+    offset: 0,
+    limit: 10,
     hasUserInfo: false,
+    loading: "true",
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
 
@@ -94,23 +95,29 @@ Page({
       })
     }
 
+    // 设置当前加载页为0
+    this.setData({offset: 0});
     // 获取护工列表数据
     this.getCaregiveres({});
   },
 
   buildParams: function () {
-    return {};
+    return {
+      limit: this.data.limit,
+      offset: this.data.offset,
+    };
   },
 
   getCaregiveres: function () {
     var params = this.buildParams();
     var self = this;
     wx.request({
-      url: 'https://jingshi.site:8443/listCaregiver',
+      url: app.globalData.APIBase + '/listCaregiver',
       method: 'GET',
-      data: params,
+      data: { data: encodeURIComponent(JSON.stringify(params)) },
       success: function (res) {
-        self.setData({ caregiveres: res.data['data'] });
+        var caregiveres = self.data.caregiveres.concat(res.data['data']);
+        self.setData({ caregiveres: caregiveres, loading: "false" });
       }
     })
   },
@@ -200,5 +207,12 @@ Page({
     wx.navigateTo({
       url: `/pages/employee_detail/employee_detail?employeeId=${employeeId}`,
     })
+  },
+
+  // 加载更多数据
+  onMore(){
+    this.setData({ offset: (this.data.offset + 1)});
+    this.setData({ loading: "true" });
+    this.getCaregiveres();
   }
 })

@@ -7,7 +7,10 @@ Page({
   data: {
     plain: "plain",
     minDate: new Date().getTime(),
-    currentDate: new Date().getTime(),
+    startDateStr: "",
+    endDateStr: "",
+    startDate: new Date().getTime(),
+    endDate: new Date().getTime(),
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -21,9 +24,15 @@ Page({
     value: "",
     payment: "1",  //支付方式
     days: 1, //服务天数
+    address: "", //服务地址
     caregiver: { photoURL: "/images/avatar.png"},
-    calenderShow: false,
+    startCalenderShow: false,
+    endCalenderShow: false,
+  },
 
+  formatDateStr(d){
+    var date = new Date(d);
+    return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
   },
 
   /**
@@ -31,14 +40,19 @@ Page({
    */
   onLoad: function (options) {
     this.setData(options);
-
-    var d = new Date()
-    console.log(d)
-    var today = d.getFullYear()+ "-" + (d.getMonth()+1) + "-" + d.getDate();
-    this.setData({today: today});
+    this.setData({
+      startDateStr: this.formatDateStr(new Date().getTime()),
+      endDateStr: this.formatDateStr(new Date().getTime()),
+    }),
     this.getCaregivere(this.data.employeeId);
 
     console.log(this.data)
+    wx.getStorage({
+      key: 'sessionID',
+      success: function(res) {
+        console.log(res.data)
+      },
+    })
   },
 
   /**
@@ -132,18 +146,106 @@ Page({
 
   },
 
-  // 选择开始服务时间
+  // 打开选择开始服务时间窗口
   selectStartDate(event){
-    this.setData({calenderShow: true})
+    this.setData({ startCalenderShow: true });
+    this.setData({ openDateType: "start" });
   },
 
+  // 打开选择结束服务时间窗口
+  selectEndDate(event) {
+    this.setData({ endCalenderShow: true });
+    this.setData({ openDateType: "end" });
+  },
+
+  // 选择时间并刷新后台data
   confirmSelectDate(event){
-    console.log(event.detail)
-    console.log(event)
+    console.log(event.detail);
+    var dateStr = this.formatDateStr(event.detail);
+    if(this.data.openDateType == "start"){
+      this.setData({ startDate: event.detail, startDateStr: dateStr });
+      this.setData({ startCalenderShow: false });
+    }else{
+      this.setData({ endDate: event.detail, endDateStr: dateStr });
+      this.setData({ endCalenderShow: false });
+    } 
+
+    this.updateDays();
+    this.setData({ openDateType: "" });
+  },
+
+  // 更新工作天数
+  updateDays(){
+    var s = this.data.startDate;
+    s = new Date(s).setHours(0,0,0,0);
+    var e = this.data.endDate;
+    var days = ((e - s) / (24 * 3600 * 1000) + 1);
+    this.setData({days: days});
   },
   
+  // 关闭时间选择窗口
   cancelSelectDate(event){
-    this.setData({ calenderShow: false })
+    this.setData({ startCalenderShow: false });
+    this.setData({ endCalenderShow: false });
+    this.setData({ openDateType: "" });
+  },
+
+  // 地址信息
+  onAddressChange(event){
+    this.setData({address: event.detail});
+  },
+
+  // 提交订单
+  onOrderSubmit(event){
+    // 在后台添加一个订单
+    var orderParams = {
+      loginSession: wx.getStorageSync("sessionID"),
+      cgId: this.data.employeeId,
+      fromDate: this.data.startDateStr,
+      toDate: this.data.endDateStr,
+      cost: (this.data.days * this.data.caregiver["price"]),
+      address: this.data.address
+    };
+
+    wx.request({
+      url: getApp().globalData.APIBase + "/addOrder",
+      method: "POST",
+      data: { data: encodeURIComponent( JSON.stringify( orderParams )) },
+      success: function (res) {
+        // 向后台服务发起支付请求
+        var payParams = {
+          loginSession: wx.getStorageSync("sessionID"), 
+          orderNum: res.data.data['orderNum']
+        };
+        wx.request({
+          url: getApp().globalData.APIBase + "/getOrderInfoForPay",
+          method: "GET",
+          data: { data: encodeURIComponent(JSON.stringify( payParams )) },
+          success: function (res) {
+            console.log(res)
+            // 发起微信支付接口
+            var data = res.data.data.data;
+            wx.requestPayment(
+              {
+                'timeStamp': data['timeStamp'],
+                'nonceStr': data['nonceStr'],
+                'package': data['package'],
+                'signType': 'MD5',
+                'paySign': data['sign'],
+                'success': function (res) {
+                  wx.redirectTo({
+                    url: '/pages/orders/orders',
+                  })
+                },
+                'fail': function (res) {
+                  console.log("fail")
+                }
+              }) ;
+
+          }
+        })
+      }
+    })
   }
 
 })

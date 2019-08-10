@@ -14,16 +14,34 @@ App({
    // })
 
     wx.login({
+      // 获取code成功
       success: function (res) {
         var code = res.code;
         if (code) {
           console.log('获取用户登录凭证：' + code);
           getApp().globalData.code = code;
           // todo: 发送 res.code 到后台换取 openId, sessionKey, unionId
-          //
+          wx.request({
+            url: getApp().globalData.APIBase+"/login",
+            method: 'POST',
+            data: { data: encodeURIComponent(JSON.stringify({ code: getApp().globalData.code })) },
+            success: function (res) {
+              console.log(res.data["data"]["loginSession"])
+              wx.setStorage({
+                key: 'sessionID',
+                data: res.data["data"]["loginSession"]
+              })
+            }
+          })
+
         } else {
           console.log('获取用户登录态失败：' + res.errMsg);
-        }
+        } 
+      },
+
+      // 获取code成功
+      fail: function(res){
+        console.log('获取code失败！')
       }
     });
 
@@ -68,5 +86,6 @@ App({
     locationInfo: null,
     city: null,
     code: null,
+    APIBase: "https://jingshi.site:8443"
   }
 })

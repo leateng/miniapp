@@ -42,16 +42,16 @@
           <van-row>
             <van-col span="24">
               <van-cell-group title="服务时间">
-                <van-cell icon="calender-o" title="开始时间" value="{{today}}" bindtap="selectStartDate"/>
-                <van-cell icon="calender-o" title="开始时间" value="{{today}}" />
+                <van-cell icon="calender-o" title="开始时间" value="{{startDateStr}}" bindtap="selectStartDate"/>
+                <van-cell icon="calender-o" title="结束时间" value="{{endDateStr}}" bindtap="selectEndDate"/>
               </van-cell-group>
 
               <van-cell-group title="服务地址">
                 <van-field
-                  value="{{ value }}"
+                  value="{{ address }}"
                   placeholder="请输入服务地址"
                   border="{{ true }}"
-                  bind:change="onChange"
+                  bind:change="onAddressChange"
                 />
               </van-cell-group>
 
@@ -88,7 +88,6 @@
       
 
       <van-tab title="个人介绍">
-
       </van-tab>
 
       <van-tab title="用户评价">
@@ -98,7 +97,6 @@
           <van-tag size="large" color="#7232dd">中评</van-tag>
           <van-tag size="large" color="#7232dd" plain>差评</van-tag>
         </view>
-
       </van-tab>
     </van-tabs>
   </view>
@@ -107,40 +105,39 @@
     <van-submit-bar
       price="{{days * caregiver['price'] * 100}}"
       button-text="提交订单"
-      bind:submit="onSubmit"
+      bind:submit="onOrderSubmit"
       />
   </view>
 </view>
 
 <van-popup 
-  show="{{ calenderShow }}" 
+  show="{{ startCalenderShow }}" 
   position="bottom"
   custom-style="width:100%;"
   bind:close="onClose">
    <van-datetime-picker
     type="date"
-    value="{{ currentDate }}"
+    value="{{ startDate }}"
     min-date="{{minDate}}"
     formatter="{{formatter}}"
+    data-open-date-type="{{openDateType}}"
     bindconfirm="confirmSelectDate"
     bindcancel="cancelSelectDate"
   />
 </van-popup>
 
-<!--van-dialog
-  use-slot
-  showConfirmButton="{{false}}"
-  closeOnClickOverlay="{{true}}"
-  show="{{ calenderShow }}"
-  context="this"
-  bind:confirm="dateConfirm"
->
-  <van-datetime-picker
+<van-popup 
+  show="{{ endCalenderShow }}" 
+  position="bottom"
+  custom-style="width:100%;"
+  bind:close="onClose">
+   <van-datetime-picker
     type="date"
-    value="{{ currentDate }}"
+    value="{{ endDate }}"
     min-date="{{minDate}}"
     formatter="{{formatter}}"
+    data-open-date-type="{{openDateType}}"
     bindconfirm="confirmSelectDate"
     bindcancel="cancelSelectDate"
   />
-</van-dialog-->
+</van-popup>
