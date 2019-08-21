@@ -75,7 +75,9 @@ App({
         //const longitude = res.longitude
         //const speed = res.speed
         //const accuracy = res.accuracy
-        getApp().globalData.locationInfo = res;
+        //getApp().globalData.locationInfo = res;
+        getApp().globalData.locationInfo['latitude'] = res['latitude'];
+        getApp().globalData.locationInfo['longitude'] = res['longitude'];
         console.log(getApp().globalData.locationInfo)  
       }
     })
@@ -83,7 +85,7 @@ App({
 
   globalData: {
     userInfo: null,
-    locationInfo: null,
+    locationInfo: {},
     city: null,
     code: null,
     APIBase: "https://jingshi.site:8443"

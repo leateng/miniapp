@@ -31,6 +31,7 @@
     </van-col>
   </van-row>
 
+  <!-- 护工列表 -->
   <view class='employee-group' style='margin-bottom:30rpx'>
     <view class="employee-item" 
       wx:for="{{caregiveres}}" wx:for-index="idx" wx:for-item="caregiver" wx:key="idNumber"
@@ -59,6 +60,7 @@
     </view>
   </view>
 
+  <!-- 加载更多 -->
   <block wx:if="{{loading == 'true'}}"> 
     <van-button plain hairline type="default" 
       loading
@@ -95,3 +97,5 @@
   bind:select="onFilterSelect"
   bind:cancel="onFilterCancel"
 />
+
+<van-notify id="notify" />

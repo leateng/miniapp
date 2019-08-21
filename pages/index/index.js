@@ -1,6 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
+import Notify from '../../miniprogram_npm/vant-weapp/notify/notify.js';
 
 Page({
   data: {
@@ -60,8 +61,10 @@ Page({
     employee: [],
     userInfo: {},
     caregiveres: [],
-    offset: 0,
-    limit: 10,
+    filterParams: {
+      offset: 0,
+      limit: 20,
+    },
     hasUserInfo: false,
     loading: "true",
     canIUse: wx.canIUse('button.open-type.getUserInfo')
@@ -95,29 +98,62 @@ Page({
       })
     }
 
-    // 设置当前加载页为0
-    this.setData({offset: 0});
-    // 获取护工列表数据
-    this.getCaregiveres({});
+    
+    var self = this;
+    // 因为刚进入这个页面时，app.js中的地理位置信息可能还没有获取，
+    // 所以把第一次刷新护工数据放在getLocation的回调里
+    wx.getLocation({
+      type: 'wgs84',
+      success(res) {
+        //const latitude = res.latitude
+        //const longitude = res.longitude
+        //const speed = res.speed
+        //const accuracy = res.accuracy
+        getApp().globalData.locationInfo['latitude'] = res['latitude'];
+        getApp().globalData.locationInfo['longitude'] = res['longitude'];
+        // 获取护工列表数据
+        self.getCaregiveres({});
+      }
+    });
+
   },
 
   buildParams: function () {
-    return {
-      limit: this.data.limit,
-      offset: this.data.offset,
-    };
+    var queryParams = {};
+    console.log(app.globalData.locationInfo)
+    Object.assign(queryParams, app.globalData.locationInfo);
+    Object.assign(queryParams, this.data.filterParams);
+
+    return queryParams;
   },
 
   getCaregiveres: function () {
     var params = this.buildParams();
     var self = this;
+    console.log("queryParams");
+    console.log(params)
     wx.request({
       url: app.globalData.APIBase + '/listCaregiver',
       method: 'GET',
       data: { data: encodeURIComponent(JSON.stringify(params)) },
       success: function (res) {
-        var caregiveres = self.data.caregiveres.concat(res.data['data']);
-        self.setData({ caregiveres: caregiveres, loading: "false" });
+        // 关闭loading
+        self.setData({ loading: "false" });
+
+        var data = res.data['data'];        
+        // 没有更多数据了
+        if(data.length == 0){
+          Notify({
+            text: '没有更多数据了...',
+            duration: 2000,
+            selector: '#notify',
+            backgroundColor: '#1989fa'
+          });
+        }
+        else{
+          var caregiveres = self.data.caregiveres.concat(data);
+          self.setData({ caregiveres: caregiveres });
+        }
       }
     })
   },
@@ -148,10 +184,6 @@ Page({
 
     // 客服
     if(event.detail == 2){
-      //wx.makePhoneCall({
-       // phoneNumber: '17779336015',
-     // })
-
       wx.redirectTo({
         url: '/pages/customer_service/customer_service'
       })
@@ -204,6 +236,7 @@ Page({
 
   onClickEmployee: function(event){
     var employeeId = event.currentTarget.dataset.employeeId;
+    console.log(employeeId)
     wx.navigateTo({
       url: `/pages/employee_detail/employee_detail?employeeId=${employeeId}`,
     })
@@ -211,7 +244,8 @@ Page({
 
   // 加载更多数据
   onMore(){
-    this.setData({ offset: (this.data.offset + 1)});
+    //this.setData({ offset: (this.data.offset + 1)});
+    this.setData({ "filterParams.offset": (this.data.filterParams.offset + 1) });
     this.setData({ loading: "true" });
     this.getCaregiveres();
   }

@@ -46,7 +46,6 @@ Page({
     }),
     this.getCaregivere(this.data.employeeId);
 
-    console.log(this.data)
     wx.getStorage({
       key: 'sessionID',
       success: function(res) {
@@ -110,6 +109,8 @@ Page({
       method: 'GET',
       data: { data: encodeURIComponent(JSON.stringify({ caregiverId: caregiverId}))},
       success: function (res) {
+        console.log("liteng")
+        console.log(res)
         var caregiver = res.data['data'];
         caregiver["photoURL"] = "http://47.93.238.25:8000/static/image/photo/"+caregiver['photoId']+ ".jpg";
         self.setData({ caregiver: res.data['data'] });
@@ -137,8 +138,17 @@ Page({
   },
 
   // 添加收藏
+  // todo: 此处美调通， 可能是post参数服务器端没有适配
   addReservation(event){
-
+    var data = event.currentTarget.dataset;
+    wx.request({
+      url: getApp().globalData.APIBase + "/addReservation",
+      method: "POST",
+      data: { data: encodeURIComponent(JSON.stringify({ "loginSession": wx.getStorageSync("sessionID"), caregiverId: this.data.employeeId})) },
+      success: function (res) {
+        console.log(res);
+      }
+    })
   },
 
   // 删除收藏

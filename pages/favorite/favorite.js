@@ -85,8 +85,8 @@ Page({
 
     // 客服
     if (event.detail == 2) {
-      wx.makePhoneCall({
-        phoneNumber: '17779336015',
+      wx.redirectTo({
+        url: '/pages/customer_service/customer_service'
       })
     }
 
@@ -103,15 +103,15 @@ Page({
   },
 
   getLikeCaregiveres: function () {
-    var params = this.buildParams();
     var self = this;
     wx.request({
-      url: 'https://jingshi.site:8443/listCaregiver',
+      url: getApp().globalData.APIBase + "/listReservation",
       method: 'GET',
-      data: params,
+      data: { data: encodeURIComponent(JSON.stringify({ "loginSession": wx.getStorageSync("sessionID") })) },
       success: function (res) {
-        self.setData({ caregiveres: res.data['data'].slice(0, 3) });
-        console.log(self.data.caregiveres)
+        console.log(res);
+        //self.setData({ caregiveres: res.data['data'].slice(0, 3) });
+        
       }
     })
   },

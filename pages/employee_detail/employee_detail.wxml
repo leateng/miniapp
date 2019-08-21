@@ -8,11 +8,11 @@
         <view class="price">￥{{caregiver['price']}}/天</view>
         <view class="like">
           <block wx:if='{{caregiver["like"] ==  true}}'>
-            <van-icon class="like" name="like" bindtap="delReservation"/>
+            <van-icon class="like" name="like" data-cgID="{{caregiver['caregiverId']}}" bindtap="delReservation"/>
           </block>
 
           <block wx:if='{{caregiver["like"] ==  undefined}}'>
-            <van-icon class="like" name="like-o" bindtap="addReservation"/>
+            <van-icon class="like" name="like-o" data-cgID="{{caregiver['caregiverId']}}" bindtap="addReservation"/>
           </block>
         </view>
 
