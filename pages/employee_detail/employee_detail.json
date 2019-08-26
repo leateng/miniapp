@@ -17,6 +17,7 @@
     "van-radio-group": "/miniprogram_npm/vant-weapp/radio-group/index",
     "van-popup": "/miniprogram_npm/vant-weapp/popup/index",
     "van-dialog": "/miniprogram_npm/vant-weapp/dialog/index",
-    "van-rate": "/miniprogram_npm/vant-weapp/rate/index"
+    "van-rate": "/miniprogram_npm/vant-weapp/rate/index",
+    "van-notify": "/miniprogram_npm/vant-weapp/notify/index"
   }
 }

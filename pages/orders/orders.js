@@ -12,7 +12,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.getOrders();
   },
 
   /**
@@ -62,5 +62,19 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  // 获取我的订单
+  getOrders: function () {
+    var self = this;
+    wx.request({
+      url: getApp().globalData.APIBase + "/listOrder",
+      method: 'GET',
+      data: { data: encodeURIComponent(JSON.stringify({ "loginSession": wx.getStorageSync("sessionID") })) },
+      success: function (res) {
+        console.log(res);
+        //self.setData({ caregiveres: res.data['data'].slice(0, 3) });
+      }
+    })
+  },
 })

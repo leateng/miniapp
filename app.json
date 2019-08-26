@@ -6,11 +6,12 @@
     "pages/orders/orders",
     "pages/common_questions/common_questions",
     "pages/customer_service/customer_service",
-    "pages/employee_detail/employee_detail"
+    "pages/employee_detail/employee_detail",
+    "pages/choose_city/choose_city"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#438eee",
+    "navigationBarBackgroundColor": "#1989fa",
     "navigationBarTitleText": "精侍陪护",
     "navigationBarTextStyle": "white"
   },

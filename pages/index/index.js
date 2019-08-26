@@ -70,7 +70,10 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
 
-  onLoad: function () {
+  onLoad: function (options) {
+    console.log("options")
+    console.log(options)
+
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -100,29 +103,64 @@ Page({
 
     
     var self = this;
-    // 因为刚进入这个页面时，app.js中的地理位置信息可能还没有获取，
-    // 所以把第一次刷新护工数据放在getLocation的回调里
-    wx.getLocation({
-      type: 'wgs84',
-      success(res) {
-        //const latitude = res.latitude
-        //const longitude = res.longitude
-        //const speed = res.speed
-        //const accuracy = res.accuracy
-        getApp().globalData.locationInfo['latitude'] = res['latitude'];
-        getApp().globalData.locationInfo['longitude'] = res['longitude'];
-        // 获取护工列表数据
-        self.getCaregiveres({});
-      }
-    });
+    
+    // 如果是从城市选择页面跳转过来的
+    if(options['city'] != undefined){
+      self.setData({ city: options['city'], searchString: options['hospital'] })
+      // 获取护工列表数据
+      self.getCaregiveres({});
+    }
+    else{
+      // 因为刚进入这个页面时，app.js中的地理位置信息可能还没有获取，
+      // 所以把第一次刷新护工数据放在getLocation的回调里
+      wx.getLocation({
+        type: 'wgs84',
+        success(res) {
+          //const latitude = res.latitude
+          //const longitude = res.longitude
+          //const speed = res.speed
+          //const accuracy = res.accuracy
+          getApp().globalData.locationInfo['latitude'] = res['latitude'];
+          getApp().globalData.locationInfo['longitude'] = res['longitude'];
 
+          // 获取当前城市名称
+          wx.request({
+            url: app.globalData.APIBase + '/getPosition',
+            method: 'GET',
+            data: {
+              data: encodeURIComponent(JSON.stringify({
+                longitude: getApp().globalData.locationInfo['longitude'],
+                latitude: getApp().globalData.locationInfo['latitude']
+              }))
+            },
+            success: function (res) {
+              getApp().globalData.locationInfo['city'] = res['data']['data']['city']
+              self.setData({ city: getApp().globalData.locationInfo['city'] })
+
+              // 获取护工列表数据
+              self.getCaregiveres({});
+            }
+          });
+
+          
+        }
+      });
+    }
   },
 
   buildParams: function () {
     var queryParams = {};
-    console.log(app.globalData.locationInfo)
+    this.parseFilterVal();
     Object.assign(queryParams, app.globalData.locationInfo);
     Object.assign(queryParams, this.data.filterParams);
+
+    if(this.data.searchString != "" && this.data.searchString != undefined){
+      queryParams['hospital'] = this.data.searchString;
+    }
+
+    if (this.data.city != "" && this.data.city != undefined) {
+      queryParams['city'] = this.data.city;
+    }
 
     return queryParams;
   },
@@ -206,25 +244,129 @@ Page({
 
   // 响应搜索按钮
   onSearch: function (event){
-    console.log("searching: " + this.data.searchString);
+    // 清空已有的护工数据，从第一页重新开始获取
+    this.setData({ "filterParams.offset": 0 });
+    this.setData({ caregiveres: [] });
+    console.log(this.data)
+    this.getCaregiveres();
   },
 
-  // filters
+  // 点击搜索条件按钮
   onClickFilterButton: function(event){
     var currentFilterType = event.currentTarget.dataset.filterType;
     var currentFilterIndex = event.currentTarget.dataset.filterIndex;
     var currentFilterOptions = this.data.filters[currentFilterIndex].options;
+
+    /*
     this.setData({ currentFilterType: currentFilterType, currentFilterIndex: currentFilterIndex, showFilter: true}, function(){
       this.getCaregiveres();
     });
+    */
+
+    // 打开当前的点击的过滤选择框
+    this.setData({ 
+      currentFilterType: currentFilterType, 
+      currentFilterIndex: currentFilterIndex, 
+      showFilter: true });
   },
 
+  // 选择了某个过滤条件
   onFilterSelect: function(event){
     var currentFilterIndex = parseInt(this.data.currentFilterIndex);
     var val = event.detail.name == "所有" ? "" : event.detail.name;
-    this.setData({ showFilter: false, [`filters[${currentFilterIndex}].val`]: val }, function () {
-      this.getCaregiveres();
-    });
+    this.setData({ 
+      showFilter: false, 
+      [`filters[${currentFilterIndex}].val`]: val }, 
+      function() {
+        // 清空已有的护工数据，从第一页重新开始获取
+        this.setData({ "filterParams.offset": 0 });
+        this.setData({ caregiveres: [] });
+        this.getCaregiveres();
+      }
+    );
+  },
+
+  // 解析filter的val，并把设置响应的值到filterParams
+  parseFilterVal(){
+    // 经验
+    var exp = this.data.filters[0].val;
+    var price = this.data.filters[1].val;
+    var rate = this.data.filters[2].val;
+    var sex = this.data.filters[3].val;
+
+    switch(exp){
+      case "3年以下":
+        this.setData({ "filterParams.expMin":  0 });
+        this.setData({ "filterParams.expMax":  3 });
+        break;
+      case "3-5年":
+        this.setData({ "filterParams.expMin": 3 });
+        this.setData({ "filterParams.expMax": 5 });
+        break;
+      case "5-10年":
+        this.setData({ "filterParams.expMin": 5 });
+        this.setData({ "filterParams.expMax": 10 });
+        break;
+      case "10年以上":
+        this.setData({ "filterParams.expMin": 10 });
+        delete this.data.filterParams['expMax'];
+        break;
+      default:
+        delete this.data.filterParams['expMin'];
+        delete this.data.filterParams['expMax'];
+    }
+
+    switch(price) {
+      case "100-200元":
+        this.setData({ "filterParams.priceMin": 100 });
+        this.setData({ "filterParams.priceMax": 200 });
+        break;
+      case "200-300元":
+        this.setData({ "filterParams.priceMin": 200 });
+        this.setData({ "filterParams.priceMax": 300 });
+        break;
+      case "300元以上":
+        this.setData({ "filterParams.priceMin": 300 });
+        delete this.data.filterParams['priceMax'];
+        break;
+      default:
+        delete this.data.filterParams['priceMin'];
+        delete this.data.filterParams['priceMax'];
+    }
+
+    switch (rate) {
+      case "3分以下":
+        this.setData({ "filterParams.pointMin": 1 });
+        this.setData({ "filterParams.pointMax": 2 });
+        break;
+      case "3-4分":
+        this.setData({ "filterParams.pointMin": 3 });
+        this.setData({ "filterParams.pointMax": 4 });
+        break;
+      case "4-5分":
+        this.setData({ "filterParams.pointMin": 4 });
+        this.setData({ "filterParams.pointMax": 5 });
+        break;
+      case "5分":
+        this.setData({ "filterParams.pointMin": 5 });
+        delete this.data.filterParams['pointMax'];
+        break;
+      default:
+        delete this.data.filterParams['pointMin'];
+        delete this.data.filterParams['pointMax'];
+    }
+
+    switch (sex) {
+      case "男":
+        this.setData({ "filterParams.gender": 'm' });
+        break;
+      case "女":
+        this.setData({ "filterParams.gender": 'f' });
+        break;
+      default:
+        delete this.data.filterParams['gender'];
+    }
+
   },
 
   onFilterClose: function(event){    
@@ -236,7 +378,6 @@ Page({
 
   onClickEmployee: function(event){
     var employeeId = event.currentTarget.dataset.employeeId;
-    console.log(employeeId)
     wx.navigateTo({
       url: `/pages/employee_detail/employee_detail?employeeId=${employeeId}`,
     })
@@ -244,9 +385,16 @@ Page({
 
   // 加载更多数据
   onMore(){
-    //this.setData({ offset: (this.data.offset + 1)});
     this.setData({ "filterParams.offset": (this.data.filterParams.offset + 1) });
     this.setData({ loading: "true" });
     this.getCaregiveres();
-  }
+  },
+
+  // 跳转到选择城市页面
+  chooseCity: function(){
+    wx.redirectTo({
+      url: '/pages/choose_city/choose_city'
+    })
+  },
+
 })

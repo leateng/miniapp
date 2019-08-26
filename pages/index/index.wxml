@@ -4,15 +4,16 @@
   <!-- 搜索框 -->
   <van-row style="width: 100%; " >
     <van-col span="4">
-      <view style="width:100%; height: 54px;font-size: 14px;box-sizing:border-box; display: flex; align-items:center; color: #438eee;">
+      <view style="width:100%; height: 54px;font-size: 14px;box-sizing:border-box; display: flex; align-items:center; color: #438eee;"
+        bindtap="chooseCity">
         <van-icon name="location"/>
-        <text>石家庄</text>
+        <text>{{city}}</text>
       </view>
     </van-col>
     <van-col span="20" offset="0">
       <van-search
           value="{{ searchString }}"
-          placeholder="搜索医院/护工/疾病"
+          placeholder="搜索医院"
           use-action-slot
           bind:change="onChange"
           bind:search="onSearch"

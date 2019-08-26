@@ -1,4 +1,8 @@
 // pages/favorite/favorite.js
+//获取应用实例
+const app = getApp()
+import Notify from '../../miniprogram_npm/vant-weapp/notify/notify.js';
+
 Page({
 
   /**
@@ -67,8 +71,6 @@ Page({
 
   // event.detail 的值为当前选中项的索引
   onTabChange: function (event) {
-    console.log(event.detail);
-
     // 首页
     if (event.detail == 0) {
       wx.redirectTo({
@@ -102,6 +104,7 @@ Page({
     return {};
   },
 
+  // 获取收藏的护工列表
   getLikeCaregiveres: function () {
     var self = this;
     wx.request({
@@ -109,10 +112,38 @@ Page({
       method: 'GET',
       data: { data: encodeURIComponent(JSON.stringify({ "loginSession": wx.getStorageSync("sessionID") })) },
       success: function (res) {
-        console.log(res);
-        //self.setData({ caregiveres: res.data['data'].slice(0, 3) });
-        
+        self.setData({ caregiveres: res.data['data'] }); 
       }
+    })
+  },
+
+  // 删除收藏
+  delReservation(event) {
+    var dataset = event.currentTarget.dataset;
+    var self = this;
+    var params = { "loginSession": wx.getStorageSync("sessionID"), caregiverId: dataset['caregiverid'] };
+
+    wx.request({
+      url: getApp().globalData.APIBase + "/delReservation",
+      method: "POST",
+      data: { data: encodeURIComponent(JSON.stringify(params)) },
+      success: function (res) {
+        self.getLikeCaregiveres();
+        Notify({
+          text: '取消收藏成功',
+          duration: 2000,
+          selector: '#notify',
+          backgroundColor: '#1989fa'
+        });
+      }
+    })
+  },
+
+  // 点击护工进入下单页面
+  onClickEmployee: function (event) {
+    var employeeId = event.currentTarget.dataset.employeeId;
+    wx.navigateTo({
+      url: `/pages/employee_detail/employee_detail?employeeId=${employeeId}`,
     })
   },
 })

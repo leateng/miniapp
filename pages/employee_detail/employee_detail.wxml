@@ -7,16 +7,16 @@
       <view class="info">
         <view class="price">￥{{caregiver['price']}}/天</view>
         <view class="like">
-          <block wx:if='{{caregiver["like"] ==  true}}'>
+          <block wx:if='{{ favorite == true }}'>
             <van-icon class="like" name="like" data-cgID="{{caregiver['caregiverId']}}" bindtap="delReservation"/>
           </block>
 
-          <block wx:if='{{caregiver["like"] ==  undefined}}'>
+          <block wx:if='{{ favorite == false }}'>
             <van-icon class="like" name="like-o" data-cgID="{{caregiver['caregiverId']}}" bindtap="addReservation"/>
           </block>
         </view>
 
-        <view class="title">{{caregiver['advantage']}}</view>
+        <view class="title">{{caregiver['advantage']}}【{{caregiver['hospital']}}】</view>
         <view class='text'>姓名：{{caregiver['name']}}</view>
         <view class='text'>年龄：{{caregiver['age']}}岁</view>
         <view class='text'>护龄：{{caregiver['experience']}}年</view>
@@ -141,3 +141,5 @@
     bindcancel="cancelSelectDate"
   />
 </van-popup>
+
+<van-notify id="notify" />
