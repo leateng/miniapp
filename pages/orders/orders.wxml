@@ -1,31 +1,102 @@
-<van-tabs active="{{ active }}" animated color="#eb5428" swipe-threshold="5" swipeable="true" bind:change="onChange" style="height: 100%;">
-  <van-tab title="全部">
-    <view class="tabContent">
-      内容 2
-    </view>
-  </van-tab>
+<view class="">
+  <van-tabs active="{{ active }}" sticky animated color="#eb5428" swipe-threshold="5" swipeable="true" bind:change="onChange" style="height: 100%;">
+    <van-tab wx:for="{{statusCN}}" wx:for-item="statuCN" title="{{statuCN}}">
+      <view class="tabContent orders">
+        <view class="order-card" wx:for="{{grouped_orders[statusMapping[statuCN]]}}" wx:for-item="order">
 
-  <van-tab title="待付款">
-    <view class="tabContent">
-      内容 2
-    </view>
-  </van-tab>
+          <view class="order" >
+            <view class="thumb">
+              <image src="http://47.93.238.25:8000/static/image/photo/{{order['photoId']}}.jpg" mode="aspectFit"></image>
+            </view>
+            <view class="info">
+              <view class="name">{{order['caregiverName']}}</view>
+              <view class="text orderId">订单编号：{{order['orderNumber']}}</view>
+              <view class='text submitTime'>下单时间：{{order['submitTime']}}</view>
+              <view class='text serviceTime'>服务时间：{{order['serviceTime']}}</view>
+              <block wx:if="{{order['status'] != 'submitted'}}">
+                <view class='text payType'>支付方式：{{order['payType']}}</view>
+                <view class='text orderAmount'>实付款：{{order['cost']}}</view>
+              </block>
+            </view>  
+          </view>
 
-  <van-tab title="待服务">
-    <view class="tabContent">
-      内容 2
-    </view>
-  </van-tab>
+          <view class="order-buttons">
+            <block wx:if="{{order['status'] == 'submitted'}}">
+              <van-button round size="mini" type="primary" data-order-number="{{order['orderNumber']}}" bind:click="payOrder"> 
+                <van-icon name="wechat"/>微信付款
+              </van-button>
+              <van-button round size="mini" type="warning" data-order-number="{{order['orderNumber']}}" bind:click="cancelOrder">
+                <van-icon name="close"/> 取消订单
+              </van-button>
+            </block>
 
-  <van-tab title="已完成">
-    <view class="tabContent">
-      内容 2
-    </view>
-  </van-tab>
+            <block wx:if="{{order['status'] == 'checked_in'}}">
+              <van-button round size="mini" type="default" data-order-number="{{order['orderNumber']}}" bind:click="addComment">
+                <van-icon name="edit"/> 评价服务
+              </van-button>
+              <van-button round size="mini" type="warning" data-order-number="{{order['orderNumber']}}" bind:click="cancelPayedOrder">
+                <van-icon name="close"/> 取消订单
+              </van-button>
+            </block>
 
-  <van-tab title="已取消">
-    <view class="tabContent">
-      内容 2
-    </view>
-  </van-tab>
-</van-tabs>
+            <block wx:if="{{order['status'] == 'appraised'}}">
+              <van-button round size="mini" type="default" data-caregiverId="{{order['caregiverId']}}" bind:click="addOrder">
+                <van-icon name="add-o"/> 再次下单
+              </van-button>
+            </block>
+
+            <block wx:if="{{order['status'] == 'canceled'}}">
+              <van-button round size="mini" type="default" data-caregiverId="{{order['caregiverId']}}" bind:click="addOrder">
+                <van-icon name="add-o"/> 再次下单
+              </van-button>
+            </block>            
+          </view>
+        </view>
+      </view>
+    </van-tab>
+
+    <van-tab title="全部">
+      <view class="tabContent orders">
+       <view class="order-card" wx:for="{{orders}}" wx:for-item="order">
+          <view class="order" >
+            <view class="thumb">
+              <image src="http://47.93.238.25:8000/static/image/photo/{{order['photoId']}}.jpg" mode="aspectFit"></image>
+            </view>
+            <view class="info">
+              <view class="name">{{order['caregiverName']}}</view>
+              <view class="text orderId">订单编号：{{order['orderNumber']}}</view>
+              <view class='text submitTime'>下单时间：{{order['submitTime']}}</view>
+              <view class='text serviceTime'>服务时间：{{order['serviceTime']}}</view>
+              <block wx:if="{{order['status'] != 'submitted'}}">
+                <view class='text payType'>支付方式：{{order['payType']}}</view>
+                <view class='text orderAmount'>实付款：{{order['cost']}}</view>
+              </block>
+            </view>
+          </view>
+
+          <view class="order-buttons">
+            <block wx:if="{{order['status'] == 'submitted'}}">
+              <van-button round size="mini" type="primary"> <van-icon name="wechat"/>微信付款</van-button>
+              <van-button round size="mini" type="warning"><van-icon name="close"/> 取消订单</van-button>
+            </block>
+
+            <block wx:if="{{order['status'] == 'checked_in'}}">
+            <van-button round size="mini" type="default"><van-icon name="edit"/> 评价服务</van-button>
+              <van-button round size="mini" type="warning"><van-icon name="close"/> 取消订单</van-button>
+            </block>
+
+            <block wx:if="{{order['status'] == 'appraised'}}">
+              <van-button round size="mini" type="default"><van-icon name="add-o"/> 再次下单</van-button>
+            </block>
+
+            <block wx:if="{{order['status'] == 'canceled'}}">
+              <van-button round size="mini" type="default"><van-icon name="add-o"/> 再次下单</van-button>
+            </block>            
+          </view>
+        </view>
+      </view>
+    </van-tab>
+  </van-tabs>
+</view>
+
+<van-notify id="notify" />
