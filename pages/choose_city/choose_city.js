@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    loading: true
   },
 
   /**
@@ -23,7 +23,11 @@ Page({
       success: function (res) {
         var hospitals = res['data']['data'];
         var groupedHospital = Utils.groupBy(hospitals, 'city');
-        self.setData({ hospitals: hospitals, groupedHospital: groupedHospital, citys: Object.keys(groupedHospital) });
+        self.setData({ 
+          hospitals: hospitals, 
+          groupedHospital: groupedHospital, 
+          citys: Object.keys(groupedHospital),
+          loading: false });
       }
     });
   },
