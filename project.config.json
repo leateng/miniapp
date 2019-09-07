@@ -6,13 +6,14 @@
 	"setting": {
 		"urlCheck": false,
 		"es6": true,
+		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
+		"coverView": true,
 		"nodeModules": true,
-		"autoAudits": false,
+		"autoAudits": true,
 		"checkInvalidKey": true,
-		"enhance": false,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
 		"babelSetting": {

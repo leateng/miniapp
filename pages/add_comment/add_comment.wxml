@@ -1,2 +1,51 @@
-<!--pages/add_comment/add_comment.wxml-->
-<text>pages/add_comment/add_comment.wxml</text>
+<view class="container">
+  <view class="thumb">
+    <image src="http://47.93.238.25:8000/static/image/photo/{{photoId}}.jpg"  mode='aspectFill'></image>
+  </view>
+
+  <view class="name">
+   <text>{{caregiverName}}</text>
+  </view>
+
+  <view class="title">
+    —————————— 匿名评价 ——————————
+  </view>
+
+  <view class="rate">
+    <van-rate size="30" value="{{ rate }}" bind:change="onRateChange" />
+  </view>
+
+  <view class="rate-desc">
+    {{descMapping[rate-1]}}
+  </view>
+
+  <view class="labels">
+    <van-row>
+      <van-col span="8" wx:for="{{tags}}" wx:for-item="tag" wx:for-index="key">
+        <van-tag plain 
+          custom-class="tag"  
+          size="medium" 
+          color="{{tag.color}}"
+          data-tag-id="{{key}}"
+          bindtap="onClickLabel">
+          {{tag.text}}
+        </van-tag>
+      </van-col>
+    </van-row>
+  </view>  
+
+  <view class="comment">
+    <van-field
+      value="{{ comment }}"
+      type="textarea"
+      placeholder="请输入评价"
+      autosize
+      border="{{ true }}"
+      bind:change="onCommentChange"
+    />
+  </view>
+
+  <view class="submit">
+    <van-button plain type="info" size="large" bindtap="submitComment">提交评价</van-button>
+  </view>
+</view>

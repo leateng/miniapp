@@ -5,62 +5,79 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    rate: 5,
+    descMapping: ["很不满意", "不满意", "一般", "满意", "非常满意"],
+    tags: {
+      "tag1": { color: "#999", text: "服务态度好" },
+      "tag2": { color: "#999", text: "沟通积极" },
+      "tag3": { color: "#999", text: "有耐心" },
+      "tag4": { color: "#999", text: "通情达理" },
+      "tag5": { color: "#999", text: "悉心照顾" },
+      "tag6": { color: "#999", text: "吃苦耐劳" }
+    },
+    comment: ""
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-
+  onLoad(options) {
+    this.setData({ 
+      photoId: options['photoId'], 
+      orderNumber: options['orderNumber'],
+      caregiverName: options['caregiverName']});
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onRateChange(event) {
+    this.setData({
+      rate: event.detail
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  onClickLabel(event){
+    var tagId = event.target.dataset.tagId;
+    if(this.data.tags[tagId].color == "#999"){
+      this.setData({[`tags.${tagId}.color`]: "#f2826a"});
+    }
+    else{
+      this.setData({[`tags.${tagId}.color`]: "#999"});
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  onCommentChange(event){
+    this.setData({comment: event.detail});
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
+  submitComment(event){
+    console.log(this.data.rate);
+    console.log(this.data.comment)
+    console.log(this.data.tags)
 
-  },
+    var seletedTags = [];
+    for(var t in this.data.tags){
+      if (this.data.tags[t].color != "#999"){
+        seletedTags.push("#" + this.data.tags[t].text);
+      }
+    }
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+    var comment = seletedTags.join(" ") + " " + this.data.comment;
+    var self = this;
+    var data = {
+      loginSession: wx.getStorageSync("sessionID"),
+      orderNum: this.data.orderNumber,
+      point: this.data.rate,
+      comment: comment
+    };
+    wx.request({
+      url: getApp().globalData.APIBase + "/addComment",
+      method: 'POST',
+      data: { data: encodeURIComponent(JSON.stringify(data)) },
+      success: function (res) {
+        console.log(res);
+       
+      }
+    })
   }
+
+  
 })

@@ -143,9 +143,9 @@ Page({
 
   // 评价服务
   addComment(event) {
-    var caregiverid = event.currentTarget.dataset['caregiverid'];
+    var data = event.currentTarget.dataset;
     wx.navigateTo({
-      url: `/pages/add_comment/add_comment?caregiverid=${caregiverid}`,
+      url: `/pages/add_comment/add_comment?orderNumber=${data['orderNumber']}&photoId=${data['photoId']}&caregiverName=${data['caregiverName']}`,
     });
   },
 

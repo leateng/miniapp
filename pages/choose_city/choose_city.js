@@ -53,7 +53,7 @@ Page({
 
   backToIndex(){
     wx.redirectTo({
-      url: '/pages/index/index',
+      url: '/pages/index/index?quitFromSelect=1',
     })
   }
 })

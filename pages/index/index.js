@@ -67,6 +67,7 @@ Page({
     },
     hasUserInfo: false,
     loading: "true",
+    searchString: "",
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
 
@@ -106,9 +107,19 @@ Page({
     
     // 如果是从城市选择页面跳转过来的
     if(options['city'] != undefined){
-      self.setData({ city: options['city'], searchString: options['hospital'] })
+      self.setData({ city: options['city'] })
+      if (options['hospital'] != undefined){
+        self.setData({ searchString: options['hospital'] })
+      }
       // 获取护工列表数据
       self.getCaregiveres({});
+    }
+    else if(options["quitFromSelect"] == "1"){      
+      // 回复进入选择城市前的数据
+      console.log(options["quitFromSelect"] == "1")
+      console.log(app.globalData.tmpIndexData)
+      console.log(self.data)
+      self.setData(app.globalData.tmpIndexData);
     }
     else{
       // 因为刚进入这个页面时，app.js中的地理位置信息可能还没有获取，
@@ -392,6 +403,7 @@ Page({
 
   // 跳转到选择城市页面
   chooseCity: function(){
+    app.globalData.tmpIndexData = this.data;
     wx.redirectTo({
       url: '/pages/choose_city/choose_city'
     })

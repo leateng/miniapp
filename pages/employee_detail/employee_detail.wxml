@@ -35,7 +35,7 @@
   </view>
   
   <view style="margin-top: 10px;">
-    <van-tabs active="{{ active }}" bind:change="onChange">
+    <van-tabs sticky animated swipeable active="{{ activeTab }}" bind:change="onTabChange">
 
       <van-tab title="基础信息">
         <view class='container'>
@@ -44,6 +44,15 @@
               <van-cell-group title="服务时间">
                 <van-cell icon="calender-o" title="开始时间" value="{{startDateStr}}" bindtap="selectStartDate"/>
                 <van-cell icon="calender-o" title="结束时间" value="{{endDateStr}}" bindtap="selectEndDate"/>
+              </van-cell-group>
+
+              <van-cell-group title="联系电话">
+                <van-field
+                  value="{{ phoneNum }}"
+                  placeholder="请输入联系电话"
+                  border="{{ true }}"
+                  bind:change="onPhoneChange"
+                />
               </van-cell-group>
 
               <van-cell-group title="服务地址">
@@ -91,11 +100,41 @@
       </van-tab>
 
       <van-tab title="用户评价">
-        <view>
-          <van-tag size="large" color="#f2826a">全部</van-tag>
-          <van-tag size="large" color="#f2826a" plain>好评</van-tag>
-          <van-tag size="large" color="#7232dd">中评</van-tag>
-          <van-tag size="large" color="#7232dd" plain>差评</van-tag>
+        <view  class='container'>
+          <view class="comment-types">
+            <van-tag 
+              style="margin: 5px;"
+              wx:for="{{commentTypes}}" wx:for-item="type"
+              plain 
+              custom-class="tag" 
+              size="medium"
+              color="#f2826a"
+              bindtap="onClickLabel">
+              {{type}}
+            </van-tag>
+          </view>  
+        </view>
+
+        <view class="comment" wx:for="{{comments}}" wx:for-item="comment">
+          <view class="comment-header">
+            <image src="../../images/avatar.png"></image>
+            <view class="comment-user-info">
+              <view class="comment-user-id">{{comment.customerId}}</view>
+              <view class="comment-user-point">
+                <van-rate
+                value="{{ comment['point'] }}"
+                count="{{ 5 }}"
+                size="{{ 12 }}"
+                readonly
+                allow-half
+                style="display: inline-block; height:12px; line-height: 17px; color: red;"
+                />
+              </view>
+            </view>
+          </view>
+          <view class="comment-content">
+            {{comment.content}}
+          </view>   
         </view>
       </van-tab>
     </van-tabs>

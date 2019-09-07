@@ -9,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    activeTab: 0,
     plain: "plain",
     minDate: new Date().getTime(),
     startDateStr: "",
@@ -28,11 +29,13 @@ Page({
     value: "",
     payment: "1",  //支付方式
     days: 1, //服务天数
+    phoneNum: "", //联系电话
     address: "", //服务地址
     caregiver: { photoURL: "/images/avatar.png"},
     startCalenderShow: false,
     endCalenderShow: false,
     favorite: false, //是否收藏
+    commentTypes: ["全部", "好评", "中评", "差评"]
   },
 
   formatDateStr(d){
@@ -50,13 +53,7 @@ Page({
       endDateStr: this.formatDateStr(new Date().getTime()),
     }),
     this.getCaregivere(this.data.employeeId);
-
-    wx.getStorage({
-      key: 'sessionID',
-      success: function(res) {
-        console.log(res.data)
-      },
-    })
+    this.getComments(this.data.employeeId);
   },
 
   /**
@@ -107,6 +104,7 @@ Page({
 
   },
 
+  // 获取护工信息
   getCaregivere: function(caregiverId){
     var self = this;
     var params = { caregiverId: caregiverId, loginSession: wx.getStorageSync("sessionID") };
@@ -124,6 +122,22 @@ Page({
           self.setData({ favorite: true });
         }
         self.setData({ caregiver: res.data['data'] });
+      }
+    })
+  },
+
+  // 获取评论信息
+  getComments: function (caregiverId) {
+    var self = this;
+    var params = { caregiverId: caregiverId, loginSession: wx.getStorageSync("sessionID") };
+
+    wx.request({
+      url: 'https://jingshi.site:8443/listComment',
+      method: 'GET',
+      data: { data: encodeURIComponent(JSON.stringify(params)) },
+      success: function (res) {
+        self.setData({ comments: res.data['data'] });
+        console.log(res.data.data)
       }
     })
   },
@@ -231,6 +245,11 @@ Page({
     this.setData({ openDateType: "" });
   },
 
+  // 联系电话
+  onPhoneChange(event){
+    this.setData({ phoneNum: event.detail });
+  },
+
   // 地址信息
   onAddressChange(event){
     this.setData({address: event.detail});
@@ -245,6 +264,7 @@ Page({
       fromDate: this.data.startDateStr,
       toDate: this.data.endDateStr,
       cost: (this.data.days * this.data.caregiver["price"]),
+      phoneNum: this.data.phoneNum,
       address: this.data.address
     };
 

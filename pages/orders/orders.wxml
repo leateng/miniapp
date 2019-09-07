@@ -31,7 +31,11 @@
             </block>
 
             <block wx:if="{{order['status'] == 'checked_in'}}">
-              <van-button round size="mini" type="default" data-order-number="{{order['orderNumber']}}" bind:click="addComment">
+              <van-button round size="mini" type="default" 
+                data-photo-id="{{order['photoId']}}" 
+                data-order-number="{{order['orderNumber']}}" 
+                data-caregiver-name="{{order['caregiverName']}}"
+                bind:click="addComment">
                 <van-icon name="edit"/> 评价服务
               </van-button>
               <van-button round size="mini" type="warning" data-order-number="{{order['orderNumber']}}" bind:click="cancelPayedOrder">
