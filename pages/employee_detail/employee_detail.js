@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp()
 import Notify from '../../miniprogram_npm/vant-weapp/notify/notify.js';
+const dayjs = require('dayjs');
 
 Page({
 
@@ -14,8 +15,8 @@ Page({
     minDate: new Date().getTime(),
     startDateStr: "",
     endDateStr: "",
-    startDate: new Date().getTime(),
-    endDate: new Date().getTime(),
+    startDate: new Date().setHours(0, 0, 0, 0),
+    endDate: new Date().setHours(0, 0, 0, 0),
     formatter(type, value) {
       if (type === 'year') {
         return `${value}年`;
@@ -35,12 +36,38 @@ Page({
     startCalenderShow: false,
     endCalenderShow: false,
     favorite: false, //是否收藏
-    commentTypes: ["全部", "好评", "中评", "差评"]
+    commentTypes: ["全部", "好评", "中评", "差评"],
+    showReserviedDate: false // 预约时间列表
   },
 
   formatDateStr(d){
     var date = new Date(d);
     return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+  },
+
+  // 判断日期 s1, e1 和 s2, e2 之间有无交集
+  isInDateRange(s1, e1, s2, e2){
+    // [s1, e1] in [s2, e2]
+    if(s1 >= s2 && e1 <= e2){
+      return true;
+    }
+
+    // [s2, e2] in [s1, e1]
+    if(s2 >= s1 && e2 <= e1){
+      return true;
+    }
+
+    // [s1 <= s2 <= e1 <= e2 ]
+    if(s1 <= s2 && s2 <= e1 && e1 <= e2){
+      return true;
+    }
+
+    // [s2 <= s1 <= e2 <= e1 ] 
+    if(s2 <= s1 && s1 <= e2 && e2 <= e1){
+      return true;
+    }
+
+    return false;
   },
 
   /**
@@ -73,34 +100,6 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
 
   },
 
@@ -216,14 +215,27 @@ Page({
   // 选择时间并刷新后台data
   confirmSelectDate(event){
     console.log(event.detail);
+    // 开始时间不能小于结束时间
+    if((this.data.openDateType == "start" && event.detail > this.data.endDate) ||
+      (this.data.openDateType == "end" && event.detail < this.data.endDate)){
+      Notify({
+        text: "其实日期不能小于结束日期",
+        duration: 2000,
+        selector: '#notify',
+        backgroundColor: '#1989fa'
+      });
+      return;
+    }
+ 
+    // 设置选择的时间数据
     var dateStr = this.formatDateStr(event.detail);
-    if(this.data.openDateType == "start"){
+    if (this.data.openDateType == "start") {
       this.setData({ startDate: event.detail, startDateStr: dateStr });
       this.setData({ startCalenderShow: false });
-    }else{
+    } else {
       this.setData({ endDate: event.detail, endDateStr: dateStr });
       this.setData({ endCalenderShow: false });
-    } 
+    }
 
     this.updateDays();
     this.setData({ openDateType: "" });
@@ -255,58 +267,121 @@ Page({
     this.setData({address: event.detail});
   },
 
+  // 校验订单字段
+  validateOrder(){
+    let phoneNum = this.data.phoneNum;
+    let address = this.data.address;
+    let phoneNumRe = /^\d{11}$/;
+
+    if(phoneNum == undefined || phoneNum.trim() == ""){
+      return "联系电话为空， 请输入";
+    }
+
+    if(phoneNumRe.test(phoneNum.trim()) != true){
+      return "手机号码格式错误，请重新输入";
+    }
+
+    if(address == undefined || address.trim() == ""){
+      return "服务地址为空， 请输入";
+    }
+
+    return true;
+  }, 
+
   // 提交订单
   onOrderSubmit(event){
-    // 在后台添加一个订单
-    var orderParams = {
-      loginSession: wx.getStorageSync("sessionID"),
-      cgId: this.data.employeeId,
-      fromDate: this.data.startDateStr,
-      toDate: this.data.endDateStr,
-      cost: (this.data.days * this.data.caregiver["price"]),
-      phoneNum: this.data.phoneNum,
-      address: this.data.address
-    };
+    // 校验订单字段
+    let valid = this.validateOrder();
+    if (valid != true) {
+      Notify({
+        text: valid,
+        duration: 2000,
+        selector: '#notify',
+        backgroundColor: '#1989fa'
+      });
+      return;
+    }
 
+    // 校验日期
+    let s1 = this.data.startDate;
+    let e1 = this.data.endDate;
+    let self = this;
     wx.request({
-      url: getApp().globalData.APIBase + "/addOrder",
-      method: "POST",
-      data: { data: encodeURIComponent( JSON.stringify( orderParams )) },
+      url: getApp().globalData.APIBase + "/querySchedule",
+      method: "GET",
+      data: { data: encodeURIComponent(JSON.stringify({ caregiverId: this.data.employeeId })) },
       success: function (res) {
-        // 向后台服务发起支付请求
-        var payParams = {
-          loginSession: wx.getStorageSync("sessionID"), 
-          orderNum: res.data.data['orderNum']
+        console.log(res)
+        // 校验日期 
+        let reservedDates = res.data.data;
+        for (let i = 0; i < reservedDates.length; i++) {
+          let s2 = new Date(reservedDates[i][0]).setHours(0, 0, 0, 0);
+          let e2 = new Date(reservedDates[i][1]).setHours(0, 0, 0, 0);
+
+          console.log("liteng")
+          console.log(s1);
+          console.log(e1);
+          console.log(s2);
+          console.log(e2);
+
+          if (self.isInDateRange(s1, e1, s2, e2) == true) {
+            
+            self.setData({ reservedDates: reservedDates});
+            self.setData({ showReserviedDate: true });
+            return;
+          }
+        }
+
+        // 创建订单，在后台添加一个订单
+        var orderParams = {
+          loginSession: wx.getStorageSync("sessionID"),
+          cgId: self.data.employeeId,
+          fromDate: self.data.startDateStr,
+          toDate: self.data.endDateStr,
+          cost: (self.data.days * self.data.caregiver["price"]),
+          phoneNum: self.data.phoneNum,
+          address: self.data.address
         };
         wx.request({
-          url: getApp().globalData.APIBase + "/getOrderInfoForPay",
-          method: "GET",
-          data: { data: encodeURIComponent(JSON.stringify( payParams )) },
+          url: getApp().globalData.APIBase + "/addOrder",
+          method: "POST",
+          data: { data: encodeURIComponent(JSON.stringify(orderParams)) },
           success: function (res) {
-            console.log(res)
-            // 发起微信支付接口
-            var data = res.data.data.data;
-            wx.requestPayment(
-              {
-                'timeStamp': data['timeStamp'],
-                'nonceStr': data['nonceStr'],
-                'package': data['package'],
-                'signType': 'MD5',
-                'paySign': data['sign'],
-                'success': function (res) {
-                  wx.redirectTo({
-                    url: '/pages/orders/orders',
-                  })
-                },
-                'fail': function (res) {
-                  console.log("fail")
-                }
-              }) ;
-
+            // 向后台服务发起支付请求
+            var payParams = {
+              loginSession: wx.getStorageSync("sessionID"),
+              orderNum: res.data.data['orderNum']
+            };
+            wx.request({
+              url: getApp().globalData.APIBase + "/getOrderInfoForPay",
+              method: "GET",
+              data: { data: encodeURIComponent(JSON.stringify(payParams)) },
+              success: function (res) {
+                console.log(res)
+                // 发起微信支付接口
+                var data = res.data.data.data;
+                wx.requestPayment({
+                  'timeStamp': data['timeStamp'],
+                  'nonceStr': data['nonceStr'],
+                  'package': data['package'],
+                  'signType': 'MD5',
+                  'paySign': data['sign'],
+                  'success': function (res) {
+                    wx.redirectTo({ url: '/pages/orders/orders' });
+                  },
+                  'fail': function (res) {
+                    console.log("fail");
+                  }
+                });
+              }
+            })
           }
         })
       }
-    })
-  }
+    });
+  },
 
+  onReserviedDateClose(){
+    this.setData({showReserviedDate: false});
+  }
 })

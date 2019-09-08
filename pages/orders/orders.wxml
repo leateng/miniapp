@@ -38,7 +38,7 @@
                 bind:click="addComment">
                 <van-icon name="edit"/> 评价服务
               </van-button>
-              <van-button round size="mini" type="warning" data-order-number="{{order['orderNumber']}}" bind:click="cancelPayedOrder">
+              <van-button round size="mini" type="warning" data-order-number="{{order['orderNumber']}}" bind:click="cancelOrder">
                 <van-icon name="close"/> 取消订单
               </van-button>
             </block>
@@ -80,21 +80,37 @@
 
           <view class="order-buttons">
             <block wx:if="{{order['status'] == 'submitted'}}">
-              <van-button round size="mini" type="primary"> <van-icon name="wechat"/>微信付款</van-button>
-              <van-button round size="mini" type="warning"><van-icon name="close"/> 取消订单</van-button>
+              <van-button round size="mini" type="primary" data-order-number="{{order['orderNumber']}}" bind:click="payOrder"> 
+                <van-icon name="wechat"/>微信付款
+              </van-button>
+              <van-button round size="mini" type="warning" data-order-number="{{order['orderNumber']}}" bind:click="cancelOrder">
+                <van-icon name="close"/> 取消订单
+              </van-button>
             </block>
 
             <block wx:if="{{order['status'] == 'checked_in'}}">
-            <van-button round size="mini" type="default"><van-icon name="edit"/> 评价服务</van-button>
-              <van-button round size="mini" type="warning"><van-icon name="close"/> 取消订单</van-button>
+              <van-button round size="mini" type="default" 
+                data-photo-id="{{order['photoId']}}" 
+                data-order-number="{{order['orderNumber']}}" 
+                data-caregiver-name="{{order['caregiverName']}}"
+                bind:click="addComment">
+                <van-icon name="edit"/> 评价服务
+              </van-button>
+              <van-button round size="mini" type="warning" data-order-number="{{order['orderNumber']}}" bind:click="cancelOrder">
+                <van-icon name="close"/> 取消订单
+              </van-button>
             </block>
 
             <block wx:if="{{order['status'] == 'appraised'}}">
-              <van-button round size="mini" type="default"><van-icon name="add-o"/> 再次下单</van-button>
+              <van-button round size="mini" type="default" data-caregiverId="{{order['caregiverId']}}" bind:click="addOrder">
+                <van-icon name="add-o"/> 再次下单
+              </van-button>
             </block>
 
             <block wx:if="{{order['status'] == 'canceled'}}">
-              <van-button round size="mini" type="default"><van-icon name="add-o"/> 再次下单</van-button>
+              <van-button round size="mini" type="default" data-caregiverId="{{order['caregiverId']}}" bind:click="addOrder">
+                <van-icon name="add-o"/> 再次下单
+              </van-button>
             </block>            
           </view>
         </view>

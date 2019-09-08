@@ -182,3 +182,17 @@
 </van-popup>
 
 <van-notify id="notify" />
+<van-popup
+  position="top"
+  style="height: 50%"
+  show="{{ showReserviedDate }}"
+  bind:close="onReserviedDateClose">
+  <view class="reservedDates">
+    <view>
+      该护工在以下时间段内已经有预约, 请重新选择时间
+    </view>
+    <view wx:for="{{reservedDates}}" wx:for-item="d">
+      {{d[0]}}--{{d[1]}}
+    </view>
+  </view>
+</van-popup>

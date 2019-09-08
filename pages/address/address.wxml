@@ -1,0 +1,12 @@
+<view class="container">
+
+	<van-button 
+		square 
+		type="primary" 
+		size="large" 
+		style='width: 100%;'
+		bind:click="newAddress">
+		添加地址
+	</van-button>
+	<van-area area-list="{{ areaList }}"  columns-num="{{ 3 }}" title="选择地区"/>
+</view>

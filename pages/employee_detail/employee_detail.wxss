@@ -50,5 +50,18 @@ van-row {
 }
 
 .comment .comment-content {
-  margin-top: 5px;
+  margin-top: 5px; 
+}
+
+van-tab .container {
+  margin-bottom: 50px;
+}
+
+.reservedDates {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #1989fa;
+  color: #FFFFFF;
 }

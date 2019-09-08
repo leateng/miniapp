@@ -8,7 +8,9 @@
     "pages/customer_service/customer_service",
     "pages/employee_detail/employee_detail",
     "pages/choose_city/choose_city",
-    "pages/add_comment/add_comment"
+    "pages/add_comment/add_comment",
+    "pages/address/address",
+    "pages/new_address/new_address"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -1,0 +1,5 @@
+/* pages/address/address.wxss */
+
+.container {
+  width: 100%;
+}

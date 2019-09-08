@@ -1,0 +1,24 @@
+{
+  "usingComponents": {
+    "van-area": "/miniprogram_npm/vant-weapp/area/index",
+    "van-cell": "/miniprogram_npm/vant-weapp/cell/index",
+    "van-cell-group": "/miniprogram_npm/vant-weapp/cell-group/index",
+    "van-search": "/miniprogram_npm/vant-weapp/search/index",
+    "van-row": "/miniprogram_npm/vant-weapp/row/index",
+    "van-col": "/miniprogram_npm/vant-weapp/col/index",
+    "van-button": "/miniprogram_npm/vant-weapp/button/index",
+    "van-icon": "/miniprogram_npm/vant-weapp/icon/index",
+    "van-tab": "/miniprogram_npm/vant-weapp/tab/index",
+    "van-tabs": "/miniprogram_npm/vant-weapp/tabs/index",
+    "van-submit-bar": "/miniprogram_npm/vant-weapp/submit-bar/index",
+    "van-tag": "/miniprogram_npm/vant-weapp/tag/index",
+    "van-datetime-picker": "/miniprogram_npm/vant-weapp/datetime-picker/index",
+    "van-field": "/miniprogram_npm/vant-weapp/field/index",
+    "van-radio": "/miniprogram_npm/vant-weapp/radio/index",
+    "van-radio-group": "/miniprogram_npm/vant-weapp/radio-group/index",
+    "van-popup": "/miniprogram_npm/vant-weapp/popup/index",
+    "van-dialog": "/miniprogram_npm/vant-weapp/dialog/index",
+    "van-rate": "/miniprogram_npm/vant-weapp/rate/index",
+    "van-notify": "/miniprogram_npm/vant-weapp/notify/index"
+  }
+}

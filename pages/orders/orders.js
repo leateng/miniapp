@@ -108,6 +108,7 @@ Page({
   },
 
   // 取消订单
+  // 取消已支付的订单, 是否已支付后台判断处理
   cancelOrder(event) {
     console.log(event);
     var orderNumber = event.currentTarget.dataset['orderNumber'];
@@ -134,11 +135,6 @@ Page({
         }
       }
     })
-  },
-
-  // 取消已支付的订单
-  cancelPayedOrder(event){
-
   },
 
   // 评价服务

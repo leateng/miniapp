@@ -1,0 +1,46 @@
+<view class="container">
+	<van-cell-group style="width: 100%;">
+	  <van-field
+	    value="{{ name }}"
+	    label="姓名"
+	    border="{{ true }}"
+	    placeholder="请输入姓名"
+	  />
+
+	  <van-field
+	    value="{{ phone }}"
+	    label="手机号"
+	    placeholder="请输入手机号"
+	    border="{{ true }}"
+
+	  />
+
+	  <van-field
+	    value="{{ city }}"
+	    label="所在地区"
+	    placeholder="省市区等"
+	    border="{{ true }}"
+	    clickable="{{ true }}"
+	    bind:focus="selectCity"
+	  />
+
+	  <van-field
+	    value="{{ address }}"
+	    label="详细地址"
+	    placeholder="请输入详细地址"
+	    border="{{ true }}"
+	    autosize
+	  />
+	</van-cell-group>
+
+	<van-button 
+		square 
+		type="info" 
+		size="large" 
+		style='width: 100%;'
+		bind:click="addAddress">
+		保存
+	</van-button>
+</view>
+
+<van-area area-list="{{ areaList }}" columns-num="{{ 3 }}" title="选择地区" />
