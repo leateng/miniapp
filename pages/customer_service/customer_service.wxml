@@ -1,6 +1,6 @@
 <view class="container">
   <image src="/images/timg.jpeg"></image>
-  <text style="font-size: 24px; color: #5b5c5e; margin-top: 20px;">17779336015</text>
+  <text style="font-size: 24px; color: #5b5c5e; margin-top: 20px;">0571-82351907</text>
   <van-button size="large" square type="primary" style="width: 100%; margin-top: 50px;" bind:click="callService">
     <van-icon name="phone" />  呼叫客服电话
   </van-button>

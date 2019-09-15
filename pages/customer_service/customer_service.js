@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    activeTab: "2",
+    activeTab: 2,
   },
 
   /**
@@ -84,10 +84,6 @@ Page({
 
     // 客服
     if (event.detail == 2) {
-      //wx.makePhoneCall({
-      // phoneNumber: '17779336015',
-      // })
-
       wx.redirectTo({
         url: '/pages/customer_service/customer_service'
       })
@@ -103,7 +99,7 @@ Page({
 
   callService: function () {
     wx.makePhoneCall({
-      phoneNumber: '17779336015',
+      phoneNumber: '0571-82351907',
     })
   }
 })

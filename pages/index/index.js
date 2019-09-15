@@ -5,7 +5,7 @@ import Notify from '../../miniprogram_npm/vant-weapp/notify/notify.js';
 
 Page({
   data: {
-    activeTab: "0",
+    activeTab: 0,
     showFilter: false,
     filters: [
       {
@@ -72,9 +72,6 @@ Page({
   },
 
   onLoad: function (options) {
-    console.log("options")
-    console.log(options)
-
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -179,8 +176,6 @@ Page({
   getCaregiveres: function () {
     var params = this.buildParams();
     var self = this;
-    console.log("queryParams");
-    console.log(params)
     wx.request({
       url: app.globalData.APIBase + '/listCaregiver',
       method: 'GET',

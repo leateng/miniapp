@@ -18,7 +18,6 @@ App({
       success: function (res) {
         var code = res.code;
         if (code) {
-          console.log('获取用户登录凭证：' + code);
           getApp().globalData.code = code;
           // todo: 发送 res.code 到后台换取 openId, sessionKey, unionId
           wx.request({
@@ -26,7 +25,6 @@ App({
             method: 'POST',
             data: { data: encodeURIComponent(JSON.stringify({ code: getApp().globalData.code })) },
             success: function (res) {
-              console.log(res.data["data"]["loginSession"])
               wx.setStorage({
                 key: 'sessionID',
                 data: res.data["data"]["loginSession"]
@@ -78,7 +76,6 @@ App({
         //getApp().globalData.locationInfo = res;
         getApp().globalData.locationInfo['latitude'] = res['latitude'];
         getApp().globalData.locationInfo['longitude'] = res['longitude'];
-        console.log(getApp().globalData.locationInfo)  
       }
     })
   },

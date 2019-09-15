@@ -113,7 +113,7 @@ Page({
 
   callService: function(){
     wx.makePhoneCall({
-      phoneNumber: '17779336015',
+      phoneNumber: '0571-82351907',
     })
   }
 })

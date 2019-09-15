@@ -113,8 +113,6 @@ Page({
       method: 'GET',
       data: { data: encodeURIComponent(JSON.stringify(params))},
       success: function (res) {
-        console.log("liteng")
-        console.log(res)
         var caregiver = res.data['data'];
         caregiver["photoURL"] = "http://47.93.238.25:8000/static/image/photo/"+caregiver['photoId']+ ".jpg";
         if (caregiver['favorite'] > 0){
@@ -136,7 +134,6 @@ Page({
       data: { data: encodeURIComponent(JSON.stringify(params)) },
       success: function (res) {
         self.setData({ comments: res.data['data'] });
-        console.log(res.data.data)
       }
     })
   },
@@ -229,11 +226,12 @@ Page({
  
     // 设置选择的时间数据
     var dateStr = this.formatDateStr(event.detail);
+    var date = new Date(event.detail).setHours(0,0,0);
     if (this.data.openDateType == "start") {
-      this.setData({ startDate: event.detail, startDateStr: dateStr });
+      this.setData({ startDate: date, startDateStr: dateStr });
       this.setData({ startCalenderShow: false });
     } else {
-      this.setData({ endDate: event.detail, endDateStr: dateStr });
+      this.setData({ endDate: date, endDateStr: dateStr });
       this.setData({ endCalenderShow: false });
     }
 
@@ -318,12 +316,6 @@ Page({
           let s2 = new Date(reservedDates[i][0]).setHours(0, 0, 0, 0);
           let e2 = new Date(reservedDates[i][1]).setHours(0, 0, 0, 0);
 
-          console.log("liteng")
-          console.log(s1);
-          console.log(e1);
-          console.log(s2);
-          console.log(e2);
-
           if (self.isInDateRange(s1, e1, s2, e2) == true) {
             
             self.setData({ reservedDates: reservedDates});
@@ -347,6 +339,7 @@ Page({
           method: "POST",
           data: { data: encodeURIComponent(JSON.stringify(orderParams)) },
           success: function (res) {
+            console.log(res);
             // 向后台服务发起支付请求
             var payParams = {
               loginSession: wx.getStorageSync("sessionID"),

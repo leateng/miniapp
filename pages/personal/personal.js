@@ -65,8 +65,6 @@ Page({
 
   // event.detail 的值为当前选中项的索引
   onTabChange: function (event) {
-    console.log(event.detail);
-
     // 首页
     if (event.detail == 0) {
       wx.redirectTo({
@@ -83,8 +81,8 @@ Page({
 
     // 客服
     if (event.detail == 2) {
-      wx.makePhoneCall({
-        phoneNumber: '17779336015',
+      wx.redirectTo({
+        url: '/pages/customer_service/customer_service'
       })
     }
 
@@ -94,5 +92,5 @@ Page({
         url: '/pages/personal/personal'
       })
     }
-  },
+  }
 })

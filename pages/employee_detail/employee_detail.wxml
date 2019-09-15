@@ -64,7 +64,7 @@
                 />
               </van-cell-group>
 
-              <van-cell-group title="支付方式">
+              <!--van-cell-group title="支付方式">
                 <van-radio-group value="{{ payment }}" bind:change="onPaymentChange">
                   <van-cell-group>
                     <van-cell
@@ -89,7 +89,8 @@
                     </van-cell>
                   </van-cell-group>
                 </van-radio-group>
-              </van-cell-group>              
+              </van-cell-group-->  
+
             </van-col>
           </van-row>
         </view>
@@ -104,7 +105,7 @@
           <view class="comment-types">
             <van-tag 
               style="margin: 5px;"
-              wx:for="{{commentTypes}}" wx:for-item="type"
+              wx:for="{{commentTypes}}" wx:for-item="type" wx:key="type"
               plain 
               custom-class="tag" 
               size="medium"
@@ -115,7 +116,7 @@
           </view>  
         </view>
 
-        <view class="comment" wx:for="{{comments}}" wx:for-item="comment">
+        <view class="comment" wx:for="{{comments}}" wx:for-item="comment" wx:key="customerId">
           <view class="comment-header">
             <image src="../../images/avatar.png"></image>
             <view class="comment-user-info">
@@ -191,7 +192,7 @@
     <view>
       该护工在以下时间段内已经有预约, 请重新选择时间
     </view>
-    <view wx:for="{{reservedDates}}" wx:for-item="d">
+    <view wx:for="{{reservedDates}}" wx:for-item="d" wx:key="d">
       {{d[0]}}--{{d[1]}}
     </view>
   </view>
