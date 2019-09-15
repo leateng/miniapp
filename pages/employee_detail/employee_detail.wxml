@@ -16,9 +16,9 @@
           </block>
         </view>
 
-        <view class="title">{{caregiver['advantage']}}【{{caregiver['hospital']}}】</view>
-        <view class='text'>姓名：{{caregiver['name']}}</view>
-        <view class='text'>年龄：{{caregiver['age']}}岁</view>
+        <view class="title">{{caregiver['name']}} {{caregiver['age']}}岁 </view>
+        <view class='text'>医院：{{caregiver['hospital']}}</view>
+        <view class='text'>科室：{{caregiver['advantage']}}</view>
         <view class='text'>护龄：{{caregiver['experience']}}年</view>
         <view class='text'>评分：{{caregiver['point']}}分
           <van-rate
