@@ -135,7 +135,10 @@
           </view>
           <view class="comment-content">
             {{comment.content}}
-          </view>   
+          </view>
+          <view class="comment-time">
+            {{comment.submitTime}}
+          </view>
         </view>
       </van-tab>
     </van-tabs>

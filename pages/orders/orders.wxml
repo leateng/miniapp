@@ -1,8 +1,8 @@
 <view class="">
   <van-tabs active="{{ activeTab }}" sticky animated color="#eb5428" swipe-threshold="5" swipeable="true" bind:change="onChange" style="height: 100%;">
-    <van-tab wx:for="{{statusCN}}" wx:for-item="statuCN" title="{{statuCN}}">
+    <van-tab wx:for="{{statusCN}}" wx:for-item="statuCN" wx:key="statuCN" title="{{statuCN}}">
       <view class="tabContent orders">
-        <view class="order-card" wx:for="{{grouped_orders[statusMapping[statuCN]]}}" wx:for-item="order">
+        <view class="order-card" wx:for="{{grouped_orders[statusMapping[statuCN]]}}" wx:for-item="order" wx:key="order.orderNumber">
 
           <view class="order" >
             <view class="thumb">
@@ -62,7 +62,7 @@
 
     <van-tab title="全部">
       <view class="tabContent orders">
-       <view class="order-card" wx:for="{{orders}}" wx:for-item="order">
+       <view class="order-card" wx:for="{{orders}}" wx:for-item="order" wx:key="order.orderNumber">
           <view class="order" >
             <view class="thumb">
               <image src="http://47.93.238.25:8000/static/image/photo/{{order['photoId']}}.jpg" mode="aspectFit"></image>

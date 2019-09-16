@@ -138,6 +138,7 @@ Page({
       method: 'GET',
       data: { data: encodeURIComponent(JSON.stringify(params)) },
       success: function (res) {
+        console.log(res.data['data'])
         self.setData({ comments: res.data['data'] });
       }
     })
