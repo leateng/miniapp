@@ -9,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    activeTab: 0,
     statusCN: ["待付款", "待服务", "已完成", "已取消"],
     statusMapping: {
       "待付款": "submitted",
@@ -22,6 +23,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.setData(options);
     this.getOrders();
   },
 
@@ -36,7 +38,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getOrders();
   },
 
   /**
@@ -141,7 +143,7 @@ Page({
   addComment(event) {
     var data = event.currentTarget.dataset;
     wx.navigateTo({
-      url: `/pages/add_comment/add_comment?orderNumber=${data['orderNumber']}&photoId=${data['photoId']}&caregiverName=${data['caregiverName']}`,
+      url: `/pages/add_comment/add_comment?orderNumber=${data['orderNumber']}&photoId=${data['photoId']}&caregiverName=${data['caregiverName']}&caregiverId=${data['caregiverId']}`,
     });
   },
 

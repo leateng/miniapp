@@ -37,7 +37,11 @@ Page({
     endCalenderShow: false,
     favorite: false, //是否收藏
     commentTypes: ["全部", "好评", "中评", "差评"],
-    showReserviedDate: false // 预约时间列表
+    showReserviedDate: false, // 预约时间列表
+
+    submit_btn_disabled: false, // 提交按钮禁用
+    submit_btn_loading: false, // 提交按钮loading
+
   },
 
   formatDateStr(d){
@@ -75,6 +79,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData(options);
+
     this.setData({
       startDateStr: this.formatDateStr(new Date().getTime()),
       endDateStr: this.formatDateStr(new Date().getTime()),
@@ -219,7 +224,7 @@ Page({
         text: "其实日期不能小于结束日期",
         duration: 2000,
         selector: '#notify',
-        backgroundColor: '#1989fa'
+        backgroundColor: '#db3131'
       });
       return;
     }
@@ -286,8 +291,20 @@ Page({
     return true;
   }, 
 
+  // 禁用提交按钮
+  submit_btn_off(ctx){
+    ctx.setData({ submit_btn_disabled: true, submit_btn_loading: true});
+  },
+
+  // 恢复提交按钮
+  submit_btn_on(ctx) {
+    ctx.setData({ submit_btn_disabled: false, submit_btn_loading: false });
+  },
+
   // 提交订单
   onOrderSubmit(event){
+    this.submit_btn_off(this);
+
     // 校验订单字段
     let valid = this.validateOrder();
     if (valid != true) {
@@ -295,8 +312,9 @@ Page({
         text: valid,
         duration: 2000,
         selector: '#notify',
-        backgroundColor: '#1989fa'
+        backgroundColor: '#db3131'
       });
+      this.submit_btn_on(this);
       return;
     }
 
@@ -320,6 +338,7 @@ Page({
             
             self.setData({ reservedDates: reservedDates});
             self.setData({ showReserviedDate: true });
+            self.submit_btn_on(self);
             return;
           }
         }
@@ -360,7 +379,7 @@ Page({
                   'signType': 'MD5',
                   'paySign': data['sign'],
                   'success': function (res) {
-                    wx.redirectTo({ url: '/pages/orders/orders' });
+                    wx.redirectTo({ url: '/pages/orders/orders?activeTab=1' });
                   },
                   'fail': function (res) {
                     console.log("fail");

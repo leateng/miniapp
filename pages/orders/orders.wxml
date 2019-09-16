@@ -1,5 +1,5 @@
 <view class="">
-  <van-tabs active="{{ active }}" sticky animated color="#eb5428" swipe-threshold="5" swipeable="true" bind:change="onChange" style="height: 100%;">
+  <van-tabs active="{{ activeTab }}" sticky animated color="#eb5428" swipe-threshold="5" swipeable="true" bind:change="onChange" style="height: 100%;">
     <van-tab wx:for="{{statusCN}}" wx:for-item="statuCN" title="{{statuCN}}">
       <view class="tabContent orders">
         <view class="order-card" wx:for="{{grouped_orders[statusMapping[statuCN]]}}" wx:for-item="order">
@@ -35,6 +35,7 @@
                 data-photo-id="{{order['photoId']}}" 
                 data-order-number="{{order['orderNumber']}}" 
                 data-caregiver-name="{{order['caregiverName']}}"
+                data-caregiver-id="{{order['caregiverId']}}"
                 bind:click="addComment">
                 <van-icon name="edit"/> 评价服务
               </van-button>

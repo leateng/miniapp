@@ -143,6 +143,8 @@
     
   <view>
     <van-submit-bar
+      disabled="{{submit_btn_disabled}}"
+      loading="{{submit_btn_loading}}"
       price="{{days * caregiver['price'] * 100}}"
       button-text="提交订单"
       bind:submit="onOrderSubmit"

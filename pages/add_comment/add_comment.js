@@ -25,7 +25,8 @@ Page({
     this.setData({ 
       photoId: options['photoId'], 
       orderNumber: options['orderNumber'],
-      caregiverName: options['caregiverName']});
+      caregiverName: options['caregiverName'],
+      caregiverId: options['caregiverId']});
   },
 
   onRateChange(event) {
@@ -73,7 +74,9 @@ Page({
       method: 'POST',
       data: { data: encodeURIComponent(JSON.stringify(data)) },
       success: function (res) {
-        console.log(res);
+        wx.redirectTo({
+          url: `/pages/employee_detail/employee_detail?employeeId=${self.data.caregiverId}&activeTab=2`,
+        })
        
       }
     })
