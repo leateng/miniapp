@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp()
 import Notify from '../../miniprogram_npm/vant-weapp/notify/notify.js';
+import Toast from '../../miniprogram_npm/vant-weapp/toast/toast';
 
 Page({
   data: {
@@ -187,16 +188,15 @@ Page({
         var data = res.data['data'];        
         // 没有更多数据了
         if(data.length == 0){
-          Notify({
-            text: '没有更多数据了...',
-            duration: 2000,
-            selector: '#notify',
-            backgroundColor: '#1989fa'
-          });
+          Toast.fail('没有更多数据');
         }
         else{
-          var caregiveres = self.data.caregiveres.concat(data);
-          self.setData({ caregiveres: caregiveres });
+          let originLen = self.data.caregiveres.length;
+          let dataLen = data.length;
+          for(let i = 0; i < dataLen; i++){
+            let key = 'caregiveres[' + (originLen + i) + ']';
+            self.setData({[key]: data[i]});
+          }
         }
       }
     })

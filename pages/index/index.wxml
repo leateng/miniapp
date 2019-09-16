@@ -35,7 +35,7 @@
   <!-- 护工列表 -->
   <view class='employee-group' style='margin-bottom:30rpx'>
     <view class="employee-item" 
-      wx:for="{{caregiveres}}" wx:for-index="idx" wx:for-item="caregiver" wx:key="idNumber"
+      wx:for="{{caregiveres}}" wx:for-index="idx" wx:for-item="caregiver" wx:key="caregiver.idNumber"
       bind:tap="onClickEmployee"
       data-employee-id="{{caregiver['idNumber']}}">
       <view class="thumb">
@@ -100,3 +100,4 @@
 />
 
 <van-notify id="notify" />
+<van-toast id="van-toast" />
