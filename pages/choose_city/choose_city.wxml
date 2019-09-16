@@ -1,25 +1,24 @@
- <view class="container">
-  <block wx:if="{{loading}}">
-    <van-button loading size="large" type="default" loading-text="加载中..." style="width:100%; margin-top: 200px;"/>
-  </block>
-  <block wx:else>
-    <view class="city" wx:for="{{citys}}" wx:for-index="idx" wx:for-item="city"  wx:key="city">
-      <view class="city-name">
-        <van-tag mark size="large" type="primary" data-city="{{city}}" bindtap="onChooseCity">
-          <van-icon name="location" /> {{city}}
-        </van-tag>
-      </view>
-
-      <view class="hospital" 
-        wx:for="{{groupedHospital[city]}}"  
-        wx:for-item="hospital"
-        wx:key="hospital"
-        data-hospital="{{hospital['hospital']}}"
-        bindtap="onChooseHospital">
-        <van-button round  icon="star-o" type="default">{{hospital['hospital']}}</van-button>
-      </view>
+<van-transition name="fade-down" show="{{ show }}" custom-class="block">
+<view class="container">
+  <view class="city" wx:for="{{citys}}" wx:for-index="idx" wx:for-item="city"  wx:key="city">
+    <view class="city-name">
+      <van-tag mark size="large" type="primary" data-city="{{city}}" bindtap="onChooseCity">
+        <van-icon name="location" /> {{city}}
+      </van-tag>
     </view>
 
-    <van-button type="default" size="large" bindtap="backToIndex">返回</van-button>
-  </block>
+    <view class="hospital" 
+      wx:for="{{groupedHospital[city]}}"  
+      wx:for-item="hospital"
+      wx:key="hospital"
+      data-hospital="{{hospital['hospital']}}"
+      bindtap="onChooseHospital">
+      <van-button round  icon="star-o" type="default">{{hospital['hospital']}}</van-button>
+    </view>
+  </view>
+
+  <van-button type="default" size="large" bindtap="backToIndex">返回</van-button>
 </view>
+</van-transition>
+
+<van-toast id="van-toast" />

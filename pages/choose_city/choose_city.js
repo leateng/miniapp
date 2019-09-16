@@ -1,6 +1,7 @@
 // pages/choose_city/choose_city.js
 const app = getApp();
 import Utils from '../../utils/util.js';
+import Toast from '../../miniprogram_npm/vant-weapp/toast/toast';
 
 Page({
 
@@ -8,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    loading: true
+    show: false
   },
 
   /**
@@ -26,9 +27,17 @@ Page({
         self.setData({ 
           hospitals: hospitals, 
           groupedHospital: groupedHospital, 
-          citys: Object.keys(groupedHospital),
-          loading: false });
+          citys: Object.keys(groupedHospital)});
+        Toast.clear();
+        self.setData({show: true});
       }
+    });
+  },
+
+  onShow: function(){
+    Toast.loading({
+      duration: 0,
+      message: '加载中...'
     });
   },
 
